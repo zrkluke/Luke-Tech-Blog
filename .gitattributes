@@ -1,0 +1,2 @@
+# Normalize text files to LF in the repository (common for Node/web projects).
+* text=auto eol=lf
