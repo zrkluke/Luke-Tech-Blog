@@ -3,7 +3,7 @@ title: "Third post"
 description: "Lorem ipsum dolor sit amet"
 date: 2022-07-22T00:00:00Z
 image: "/images/post/post-3.jpg"
-authors: ["John Doe"]
+authors: ["Luke"]
 categories: ["Others"]
 tags: ["others"]
 ---

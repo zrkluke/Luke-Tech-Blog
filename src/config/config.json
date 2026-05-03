@@ -1,11 +1,11 @@
 {
   "site": {
     "title": "Luke Tech Blog",
-    "base_url": "https://example.com/",
+    "base_url": "https://luke-tech-blog.vercel.app",
     "base_path": "/",
     "trailing_slash": false,
     "favicon": "/images/favicon.png",
-    "logo": "/images/logo.svg",
+    "logo": "",
     "logo_width": "197",
     "logo_height": "31",
     "logo_text": "Luke Tech Blog"

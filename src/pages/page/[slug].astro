@@ -45,7 +45,7 @@ const currentPosts = sortedPosts.slice(indexOfFirstPost, indexOfLastPost);
   <!-- Banner -->
   <section
     class="banner"
-    style="background-image: url('/images/banner/banner-bg.svg'"
+    style="background-image: url('/images/banner/banner-bg.svg')"
   >
     <div class="container">
       {
@@ -63,7 +63,15 @@ const currentPosts = sortedPosts.slice(indexOfFirstPost, indexOfLastPost);
         <div class="lg:col-6">
           {
             banner?.title && (
-              <h1 set:html={markdownify(banner?.title)} class="h2 mb-8" />
+              <h1 set:html={markdownify(banner?.title)} class="h2 mb-4" />
+            )
+          }
+          {
+            banner?.subtitle && (
+              <p
+                class="text-lg text-text md:text-xl"
+                set:html={markdownify(banner.subtitle)}
+              />
             )
           }
         </div>

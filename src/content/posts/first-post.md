@@ -3,7 +3,7 @@ title: "First post"
 description: "Lorem ipsum dolor sit amet"
 date: 2022-07-08T00:00:00Z
 image: "/images/post/post-1.jpg"
-authors: ["John Doe"]
+authors: ["Luke"]
 categories: ["Others"]
 tags: ["others"]
 ---

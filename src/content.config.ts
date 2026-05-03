@@ -9,6 +9,7 @@ const homepageCollection = defineCollection({
     banner: z
       .object({
         title: z.string(),
+        subtitle: z.string().optional(),
         image: z.string(),
       })
       .optional(),
