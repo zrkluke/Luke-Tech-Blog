@@ -1,0 +1,33 @@
+{
+  "site": {
+    "title": "Luke Tech Blog",
+    "base_url": "https://example.com/",
+    "base_path": "/",
+    "trailing_slash": false,
+    "favicon": "/images/favicon.png",
+    "logo": "/images/logo.svg",
+    "logo_width": "197",
+    "logo_height": "31",
+    "logo_text": "Luke Tech Blog"
+  },
+
+  "settings": {
+    "pagination": 5
+  },
+
+  "params": {
+    "contact_form_action": "#",
+    "copyright": "© 2026 Luke Tech Blog"
+  },
+
+  "google_tag_manager": {
+    "enable": false,
+    "gtm_id": "GTM-XXXXXX"
+  },
+
+  "metadata": {
+    "meta_author": "Luke",
+    "meta_image": "/images/og-image.png",
+    "meta_description": "Luke Tech Blog"
+  }
+}
