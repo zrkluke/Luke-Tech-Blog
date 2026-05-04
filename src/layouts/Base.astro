@@ -9,6 +9,7 @@ import "@/styles/main.css";
 import "katex/dist/katex.min.css";
 import { Font } from "astro:assets";
 import { ClientRouter } from "astro:transitions";
+import SpeedInsights from "@vercel/speed-insights/astro";
 
 // font families - extract font names for Font component (filter out type keys)
 const fontEntries = Object.entries(theme.fonts.font_family).filter(
@@ -174,5 +175,6 @@ const documentLang = htmlLang ?? "en";
       <slot />
     </main>
     <Footer />
+    <SpeedInsights />
   </body>
 </html>
