@@ -8,7 +8,7 @@ tags: ["PostgreSQL", "Database", "效能調校", "GIN Index", "SQL"]
 image: "/images/post/postgresql-gin-index-optimization-cover.png"
 ---
 
-在資料庫的世界裡，處理海量資料的標籤過濾，往往是工程師最容易踩坑的深水區。這篇文章記錄了我近期在工作上遇到的一次真實效能調校過程，從一開始的觀念碰撞，到最後挖出底層解法的完整心路歷程。
+這篇文章記錄了我近期在工作上遇到的一次真實效能調校過程，從一開始的觀念碰撞，到最後挖出底層解法的完整心路歷程。
 
 **本篇為上集**，先談 LIKE 與 Regex 的抉擇與 I/O／CPU 迷思；**[下集：EXPLAIN、資料規模與 GIN 索引](/posts/postgresql-gin-index-optimization-part-2)** 接著談如何打破全表掃描。
 

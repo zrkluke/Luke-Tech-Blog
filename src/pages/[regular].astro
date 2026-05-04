@@ -1,6 +1,5 @@
 ---
 import AboutContact from "@/components/AboutContact.astro";
-import AboutLocaleSwitch from "@/components/AboutLocaleSwitch.astro";
 import Base from "@/layouts/Base.astro";
 import { getSinglePage } from "@/lib/contentParser.astro";
 import { markdownify } from "@/lib/utils/textConverter";
@@ -35,7 +34,6 @@ const isAboutZh = page.id === "about";
     <div class="container">
       <h1 set:html={markdownify(title)} class="h2 mb-8 text-primary" />
       <div class="content">
-        {isAboutZh && <AboutLocaleSwitch current="zh" />}
         <Content />
         {isAboutZh && <AboutContact locale="zh" />}
       </div>

@@ -4,7 +4,7 @@ import PostSingle from "@/partials/PostSingle.astro";
 import { getSinglePage } from "@/lib/contentParser.astro";
 
 export async function getStaticPaths() {
-  const posts = await getSinglePage("posts");
+  const posts = await getSinglePage("postsEn");
 
   const paths = posts.map((post) => ({
     params: {
@@ -24,6 +24,7 @@ const { title, meta_title, description, image } = post.data;
   meta_title={meta_title}
   description={description}
   image={image}
+  htmlLang="en"
 >
-  <PostSingle post={post} locale="zh" />
+  <PostSingle post={post} locale="en" />
 </Base>

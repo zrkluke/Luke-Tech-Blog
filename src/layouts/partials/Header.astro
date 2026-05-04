@@ -1,7 +1,85 @@
 ---
 import Logo from "@/components/Logo.astro";
+import { settings } from "@/config/config.json";
 import menu from "@/config/menu.json";
+import { getSinglePage } from "@/lib/contentParser.astro";
 import { IoSearch } from "react-icons/io5";
+
+const postsZh = await getSinglePage("posts");
+const postsEn = await getSinglePage("postsEn");
+const enPostIds = new Set(postsEn.map((p) => p.id));
+const zhListPages = Math.ceil(postsZh.length / settings.pagination);
+const enListPages = Math.ceil(postsEn.length / settings.pagination);
+
+function enHomeHrefForZhPage(pageNum: number) {
+  if (enListPages <= 1) return "/en";
+  const target = Math.min(pageNum, enListPages);
+  return target <= 1 ? "/en" : `/en/page/${target}`;
+}
+
+function zhHomeHrefForEnPage(pageNum: number) {
+  if (zhListPages <= 1) return "/";
+  const target = Math.min(pageNum, zhListPages);
+  return target <= 1 ? "/" : `/page/${target}`;
+}
+
+function normalizePath(pathname: string) {
+  const p = pathname.replace(/\/$/, "");
+  return p === "" ? "/" : p;
+}
+
+/** Bilingual routes: About + posts that exist in postsEn with same id */
+type LangNav = { zhHref: string; enHref: string; current: "zh" | "en" };
+let langNav: LangNav | null = null;
+const path = normalizePath(Astro.url.pathname);
+
+if (path === "/") {
+  langNav = { zhHref: "/", enHref: "/en", current: "zh" };
+} else if (path === "/en") {
+  langNav = { zhHref: "/", enHref: "/en", current: "en" };
+} else if (path === "/about") {
+  langNav = { zhHref: "/about", enHref: "/en/about", current: "zh" };
+} else if (path === "/en/about") {
+  langNav = { zhHref: "/about", enHref: "/en/about", current: "en" };
+} else {
+  const zhPaged = path.match(/^\/page\/(\d+)$/);
+  if (zhPaged?.[1]) {
+    const n = Number(zhPaged[1]);
+    langNav = {
+      zhHref: `/page/${n}`,
+      enHref: enHomeHrefForZhPage(n),
+      current: "zh",
+    };
+  }
+  const enPaged = path.match(/^\/en\/page\/(\d+)$/);
+  if (enPaged?.[1]) {
+    const n = Number(enPaged[1]);
+    langNav = {
+      zhHref: zhHomeHrefForEnPage(n),
+      enHref: `/en/page/${n}`,
+      current: "en",
+    };
+  }
+}
+
+if (!langNav) {
+  const zhPost = path.match(/^\/posts\/(.+)$/);
+  if (zhPost?.[1] && enPostIds.has(zhPost[1])) {
+    langNav = {
+      zhHref: `/posts/${zhPost[1]}`,
+      enHref: `/en/posts/${zhPost[1]}`,
+      current: "zh",
+    };
+  }
+  const enPost = path.match(/^\/en\/posts\/(.+)$/);
+  if (enPost?.[1]) {
+    langNav = {
+      zhHref: `/posts/${enPost[1]}`,
+      enHref: `/en/posts/${enPost[1]}`,
+      current: "en",
+    };
+  }
+}
 
 export interface ChildNavigationLink {
   name: string;
@@ -18,13 +96,47 @@ export interface NavigationLink {
 const { main }: { main: NavigationLink[] } = menu;
 
 const currentPath = Astro.url.pathname;
+
+const navLocale: "zh" | "en" = path.startsWith("/en") ? "en" : "zh";
+
+function localizeMainLink(item: NavigationLink): NavigationLink {
+  if (item.url === "/") {
+    return {
+      ...item,
+      name: navLocale === "en" ? "Home" : "首頁",
+      url: navLocale === "en" ? "/en" : "/",
+    };
+  }
+  if (item.url === "/about") {
+    return {
+      ...item,
+      name: navLocale === "en" ? "About" : "關於我",
+      url: navLocale === "en" ? "/en/about" : "/about",
+    };
+  }
+  return item;
+}
+
+const mainNav = main.map(localizeMainLink);
+
+function isNavLinkActive(href: string): boolean {
+  if (href === "/") return path === "/";
+  if (href === "/en") return path === "/en";
+  if (href === "/about") return path === "/about";
+  if (href === "/en/about") return path === "/en/about";
+  return path === href;
+}
+
+const logoHomeHref = navLocale === "en" ? "/en" : "/";
 ---
 
-<header class={`header ${currentPath === "/" ? "fixed" : "sticky"}`}>
+<header
+  class={`header ${currentPath === "/" || currentPath === "/en" ? "fixed" : "sticky"}`}
+>
   <nav class="navbar container">
     <!-- logo -->
     <div class="order-0">
-      <Logo />
+      <Logo homeHref={logoHomeHref} />
     </div>
     <!-- navbar toggler -->
     <input id="nav-toggle" type="checkbox" class="hidden" />
@@ -57,7 +169,7 @@ const currentPath = Astro.url.pathname;
       class="navbar-nav order-3 hidden w-full items-center md:order-1 md:flex md:w-auto md:space-x-2"
     >
       {
-        main.map((menu) => (
+        mainNav.map((menu) => (
           <>
             {menu.hasChildren ? (
               <li class="nav-item nav-dropdown group relative">
@@ -73,7 +185,7 @@ const currentPath = Astro.url.pathname;
                       <a
                         href={child.url}
                         class={`nav-dropdown-link block ${
-                          currentPath === child.url && "active"
+                          isNavLinkActive(child.url) && "active"
                         }`}
                       >
                         {child.name}
@@ -87,7 +199,7 @@ const currentPath = Astro.url.pathname;
                 <a
                   href={menu.url}
                   class={`nav-link block ${
-                    currentPath === menu.url && "active"
+                    isNavLinkActive(menu.url) && "active"
                   }`}
                 >
                   {menu.name}
@@ -97,7 +209,45 @@ const currentPath = Astro.url.pathname;
           </>
         ))
       }
-      <li class="nav-item">
+      <li
+        class="nav-item ms-auto flex flex-wrap items-center justify-center gap-3 max-md:mt-6 max-md:w-full md:gap-4"
+      >
+        {
+          langNav && (
+            <div
+              class="inline-flex shrink-0 gap-0.5 rounded-md border border-border/50 bg-transparent p-0.5"
+              role="tablist"
+              aria-label="語言 Language"
+            >
+              <a
+                href={langNav.zhHref}
+                role="tab"
+                aria-selected={langNav.current === "zh" ? "true" : "false"}
+                class:list={[
+                  "rounded px-3 py-1.5 text-sm font-medium transition-colors bg-transparent",
+                  langNav.current === "zh"
+                    ? "text-text-dark font-semibold hover:text-primary"
+                    : "text-text/55 hover:text-primary",
+                ]}
+              >
+                中文
+              </a>
+              <a
+                href={langNav.enHref}
+                role="tab"
+                aria-selected={langNav.current === "en" ? "true" : "false"}
+                class:list={[
+                  "rounded px-3 py-1.5 text-sm font-medium transition-colors bg-transparent",
+                  langNav.current === "en"
+                    ? "text-text-dark font-semibold hover:text-primary"
+                    : "text-text/55 hover:text-primary",
+                ]}
+              >
+                EN
+              </a>
+            </div>
+          )
+        }
         <a
           class="inline-block cursor-pointer p-2 text-xl text-text-dark hover:text-primary md:block"
           href="/search"

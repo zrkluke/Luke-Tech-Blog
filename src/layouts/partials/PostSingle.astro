@@ -1,20 +1,23 @@
 ---
+import Share from "@/components/Share.astro";
 import { Image } from "astro:assets";
 import { getSinglePage } from "@/lib/contentParser.astro";
 import dateFormat from "@/lib/utils/dateFormat";
 import { humanize, markdownify, slugify } from "@/lib/utils/textConverter";
-import { render } from "astro:content";
 import type { CollectionEntry } from "astro:content";
-import Share from "@/components/Share.astro";
+import { render } from "astro:content";
 
 type Props = {
-  post: CollectionEntry<"posts">;
+  post: CollectionEntry<"posts"> | CollectionEntry<"postsEn">;
+  locale?: "zh" | "en";
 };
 
 const allAuthors = await getSinglePage("authors");
-const { post } = Astro.props;
+const { post, locale = "zh" } = Astro.props;
 const { Content } = await render(post);
 const { title, authors, categories, image, date } = post.data;
+const shareUrlPath =
+  locale === "en" ? `en/posts/${post.id}` : `posts/${post.id}`;
 ---
 
 <section class="section">
@@ -75,7 +78,12 @@ const { title, authors, categories, image, date } = post.data;
 
           <div class="flex items-center">
             <h5 class="mr-3">Share :</h5>
-            <Share className="social-icons" title={title} slug={post.id} />
+            <Share
+              className="social-icons"
+              title={title}
+              description={post.data.description}
+              urlPath={shareUrlPath}
+            />
           </div>
         </div>
       </div>

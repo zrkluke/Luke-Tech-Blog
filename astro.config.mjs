@@ -58,7 +58,7 @@ export default defineConfig({
       prefixDefaultLocale: false,
     },
   },
-  trailingSlash: config.site.trailing_slash ? "always" : "never",
+  trailingSlash: config.site.trailing_slash ? "always" : "ignore",
   image: { service: sharpImageService() },
   vite: { plugins: [tailwindcss()] },
   fonts: fontsConfig,

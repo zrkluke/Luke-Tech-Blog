@@ -1,6 +1,5 @@
 ---
 import AboutContact from "@/components/AboutContact.astro";
-import AboutLocaleSwitch from "@/components/AboutLocaleSwitch.astro";
 import Base from "@/layouts/Base.astro";
 import { markdownify } from "@/lib/utils/textConverter";
 import { getEntry, render } from "astro:content";
@@ -24,7 +23,6 @@ const { Content } = await render(page);
     <div class="container">
       <h1 set:html={markdownify(title)} class="h2 mb-8 text-primary" />
       <div class="content">
-        <AboutLocaleSwitch current="en" />
         <Content />
         <AboutContact locale="en" />
       </div>

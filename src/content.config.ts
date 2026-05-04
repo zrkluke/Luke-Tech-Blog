@@ -2,43 +2,59 @@ import { glob } from "astro/loaders";
 import { defineCollection } from "astro:content";
 import { z } from "astro/zod";
 
-// Homepage Collection schema
-const homepageCollection = defineCollection({
-  loader: glob({ pattern: "**/-*.{md,mdx}", base: "src/content/homepage" }),
-  schema: z.object({
-    banner: z
-      .object({
-        title: z.string(),
-        subtitle: z.string().optional(),
-        image: z.string(),
-      })
-      .optional(),
-    call_to_action: z
-      .object({
-        title: z.string(),
-        content: z.string(),
-        image: z.string(),
-        button_label: z.string(),
-        button_link: z.string(),
-      })
-      .optional(),
-  }),
+const homepageDataSchema = z.object({
+  banner: z
+    .object({
+      title: z.string(),
+      subtitle: z.string().optional(),
+      image: z.string(),
+    })
+    .optional(),
+  call_to_action: z
+    .object({
+      title: z.string(),
+      content: z.string(),
+      image: z.string(),
+      button_label: z.string(),
+      button_link: z.string(),
+    })
+    .optional(),
 });
 
-// Post collection schema
+// Homepage Collection schema (default locale)
+const homepageCollection = defineCollection({
+  loader: glob({ pattern: "**/-*.{md,mdx}", base: "src/content/homepage" }),
+  schema: homepageDataSchema,
+});
+
+// English homepage copy for /en
+const homepageEnCollection = defineCollection({
+  loader: glob({ pattern: "**/-*.{md,mdx}", base: "src/content/homepage-en" }),
+  schema: homepageDataSchema,
+});
+
+const postEntrySchema = z.object({
+  title: z.string(),
+  meta_title: z.string().optional(),
+  description: z.string().optional(),
+  date: z.coerce.date(),
+  image: z.string().optional(),
+  authors: z.array(z.string()).default(() => ["admin"]),
+  categories: z.array(z.string()).default(() => ["others"]),
+  tags: z.array(z.string()).default(() => ["others"]),
+  draft: z.boolean().optional(),
+});
+
+// Post collection schema (default locale: zh)
 const postsCollection = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "src/content/posts" }),
-  schema: z.object({
-    title: z.string(),
-    meta_title: z.string().optional(),
-    description: z.string().optional(),
-    date: z.coerce.date(),
-    image: z.string().optional(),
-    authors: z.array(z.string()).default(() => ["admin"]),
-    categories: z.array(z.string()).default(() => ["others"]),
-    tags: z.array(z.string()).default(() => ["others"]),
-    draft: z.boolean().optional(),
-  }),
+  schema: postEntrySchema,
+});
+
+// English posts (URLs under /en/posts/…)
+const postsEnCollection = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "src/content/posts-en" }),
+  schema: postEntrySchema,
 });
 
 // Author collection schema
@@ -76,7 +92,9 @@ const pagesEnCollection = defineCollection({
 // Export collections
 export const collections = {
   homepage: homepageCollection,
+  homepageEn: homepageEnCollection,
   posts: postsCollection,
+  postsEn: postsEnCollection,
   pages: pagesCollection,
   pagesEn: pagesEnCollection,
   authors: authorsCollection,

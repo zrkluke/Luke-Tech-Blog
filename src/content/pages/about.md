@@ -1,5 +1,5 @@
 ---
-title: "About"
+title: "關於我"
 meta_title: "關於 Luke Kong | Luke Tech Blog"
 description: "軟體工程師，專精 Python、LLM、AI Agent、Multi-Agent 與 Agentic Workflow；熟悉 ChatGPT、Gemini、Claude；提供 Python 客製化開發與 n8n 流程接案。"
 draft: false
@@ -11,7 +11,7 @@ draft: false
 
 ---
 
-### 1. 我的專長與背景
+### 1. 我的背景與專長
 
 我是**軟體工程師**，工作重心在 **Python** 後端與整合、**LLM** 應用，以及 **AI Agent／Multi-Agent** 與 **Agentic Workflow**（讓模型能依目標呼叫工具、走完整任務流，而不是單次問答）。熟悉把業務需求拆成可實作的模組：提示詞、工具介面、狀態與錯誤處理、可觀測性，讓系統在真實環境裡跑得穩。
 
