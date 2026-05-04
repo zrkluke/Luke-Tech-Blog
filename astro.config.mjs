@@ -51,6 +51,13 @@ const fontsConfig = Object.entries(theme.fonts.font_family)
 export default defineConfig({
   site: config.site.base_url ? config.site.base_url : "http://examplesite.com",
   base: config.site.base_path ? config.site.base_path : "/",
+  i18n: {
+    defaultLocale: "zh",
+    locales: ["zh", "en"],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
   trailingSlash: config.site.trailing_slash ? "always" : "never",
   image: { service: sharpImageService() },
   vite: { plugins: [tailwindcss()] },

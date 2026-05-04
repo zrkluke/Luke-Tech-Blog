@@ -1,0 +1,35 @@
+---
+import config from "@/config/config.json";
+
+type Props = { locale: "zh" | "en" };
+const { locale } = Astro.props;
+const email = config.site.contact_email;
+---
+
+{
+  email && (
+    <p class="mt-10 border-t border-border pt-8">
+      {locale === "zh" ? (
+        <>
+          <strong>聯絡方式：</strong>
+          <a
+            href={`mailto:${email}`}
+            class="text-primary underline hover:opacity-80"
+          >
+            {email}
+          </a>
+        </>
+      ) : (
+        <>
+          <strong>Contact:</strong>{" "}
+          <a
+            href={`mailto:${email}`}
+            class="text-primary underline hover:opacity-80"
+          >
+            {email}
+          </a>
+        </>
+      )}
+    </p>
+  )
+}

@@ -8,7 +8,8 @@
     "logo": "",
     "logo_width": "197",
     "logo_height": "31",
-    "logo_text": "Luke Tech Blog"
+    "logo_text": "Luke Tech Blog",
+    "contact_email": "zrkong0309@gmail.com"
   },
 
   "settings": {
@@ -16,7 +17,6 @@
   },
 
   "params": {
-    "contact_form_action": "#",
     "copyright": "© 2026 Luke Tech Blog"
   },
 

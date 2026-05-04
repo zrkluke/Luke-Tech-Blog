@@ -19,12 +19,14 @@ export async function GET(context: APIContext): Promise<Response> {
   const publishedPosts = await getSinglePage("posts");
   const site = (context.site || new URL(config.site.base_url)).toString().replace(/\/$/, "");
   const title = escapeXml(config.site.title || "Northendlab Light Astro");
-  const description = escapeXml("Northendlab Light Astro Blog");
+  const description = escapeXml(
+    config.metadata?.meta_description || config.site.title || "Blog",
+  );
 
   const items = publishedPosts
     .map((post: CollectionEntry<"posts">) => {
       const pubDate = (post.data.date || new Date()).toUTCString();
-      const link = `${site}/blog/${post.id}/`;
+      const link = `${site}/posts/${post.id}`;
       const itemTitle = escapeXml(post.data.title || "");
       const itemDesc = escapeXml(post.data.description || "");
       return `<item>

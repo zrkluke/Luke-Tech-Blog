@@ -15,12 +15,13 @@ const fontEntries = Object.entries(theme.fonts.font_family).filter(
   ([key]) => !key.includes("_type"),
 );
 
-const { title, meta_title, description, image, noindex, canonical } =
+const { title, meta_title, description, image, noindex, canonical, htmlLang } =
   Astro.props;
+const documentLang = htmlLang ?? "en";
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={documentLang}>
   <head>
     <!-- google tag manager -->
     {

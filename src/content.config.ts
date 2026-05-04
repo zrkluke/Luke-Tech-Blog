@@ -41,17 +41,6 @@ const postsCollection = defineCollection({
   }),
 });
 
-// contact collection schema
-const contactCollection = defineCollection({
-  loader: glob({ pattern: "**/-*.{md,mdx}", base: "src/content/contact" }),
-  schema: z.object({
-    title: z.string(),
-    content: z.string(),
-    image: z.string().optional(),
-    draft: z.boolean().optional(),
-  }),
-});
-
 // Author collection schema
 const authorsCollection = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "src/content/authors" }),
@@ -63,17 +52,25 @@ const authorsCollection = defineCollection({
   }),
 });
 
-// Pages collection schema
+const pageSchema = z.object({
+  title: z.string(),
+  meta_title: z.string().optional(),
+  description: z.string().optional(),
+  image: z.string().optional(),
+  layout: z.string().optional(),
+  draft: z.boolean().optional(),
+});
+
+// Pages collection schema (default locale: zh, URLs without prefix)
 const pagesCollection = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "src/content/pages" }),
-  schema: z.object({
-    title: z.string(),
-    meta_title: z.string().optional(),
-    description: z.string().optional(),
-    image: z.string().optional(),
-    layout: z.string().optional(),
-    draft: z.boolean().optional(),
-  }),
+  schema: pageSchema,
+});
+
+// English-only pages (e.g. /en/about) — mirror `pageSchema` for i18n pairs
+const pagesEnCollection = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "src/content/pages-en" }),
+  schema: pageSchema,
 });
 
 // Export collections
@@ -81,6 +78,6 @@ export const collections = {
   homepage: homepageCollection,
   posts: postsCollection,
   pages: pagesCollection,
+  pagesEn: pagesEnCollection,
   authors: authorsCollection,
-  contact: contactCollection,
 };
