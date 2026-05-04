@@ -46,7 +46,7 @@ const { post } = Astro.props;
           )
           .map((author) => (
             <a
-              href={`/authors/${slugify(author.data.title)}`}
+              href={`/authors/${author.id}`}
               class="flex items-center hover:text-primary hover:underline"
             >
               <span>{author.data.title}</span>
