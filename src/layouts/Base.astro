@@ -20,6 +20,25 @@ const fontEntries = Object.entries(theme.fonts.font_family).filter(
 const { title, meta_title, description, image, noindex, canonical, htmlLang } =
   Astro.props;
 const documentLang = htmlLang ?? "en";
+
+const siteBase = config.site.base_url.replace(/\/+$/, "");
+let pathForUrl = Astro.url.pathname || "/";
+if (
+  !config.site.trailing_slash &&
+  pathForUrl.length > 1 &&
+  pathForUrl.endsWith("/")
+) {
+  pathForUrl = pathForUrl.replace(/\/+$/, "") || "/";
+}
+if (
+  config.site.trailing_slash &&
+  pathForUrl !== "/" &&
+  !pathForUrl.endsWith("/")
+) {
+  pathForUrl = `${pathForUrl}/`;
+}
+const defaultCanonical = `${siteBase}${pathForUrl}`;
+const canonicalUrl = canonical ?? defaultCanonical;
 ---
 
 <!doctype html>
@@ -84,7 +103,7 @@ const documentLang = htmlLang ?? "en";
     </title>
 
     <!-- canonical url -->
-    {canonical && <link rel="canonical" href={canonical} item-prop="url" />}
+    <link rel="canonical" href={canonicalUrl} itemprop="url" />
 
     <!-- noindex robots -->
     {noindex && <meta name="robots" content="noindex,nofollow" />}
@@ -118,10 +137,7 @@ const documentLang = htmlLang ?? "en";
       )}
     />
     <meta property="og:type" content="website" />
-    <meta
-      property="og:url"
-      content={`${config.site.base_url}/${Astro.url.pathname.replace("/", "")}`}
-    />
+    <meta property="og:url" content={canonicalUrl} />
 
     <!-- twitter-title -->
     <meta
