@@ -21,6 +21,7 @@
     "@astrojs/rss": "4.0.15",
     "@astrojs/sitemap": "3.7.1",
     "@justinribeiro/lite-youtube": "^1.9.0",
+    "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "astro": "6.0.2",
     "astro-auto-import": "^0.5.1",
