@@ -1,45 +1,56 @@
 ---
-title: "PostgreSQL Optimization (Part 1): when LIKE meets Regex"
-description: "ETL-scale tag filters: LIKE or Regex? Why both hit full scans—and how I/O vs CPU bottlenecks differ."
+title: "PostgreSQL Optimization (Part 1): LIKE vs Regex, which is actually faster?"
+description: "A plain-language walkthrough of LIKE vs Regex: why Regex can lower CPU work, but may still leave full-scan I/O as the real bottleneck."
 date: 2026-05-04T00:00:00Z
 authors: ["Luke Kong"]
 categories: ["Database"]
 tags: ["PostgreSQL", "Database", "Performance", "GIN Index", "SQL"]
+audience: "non-technical"
 image: "/images/post/postgresql-gin-index-optimization-cover.png"
 ---
 
-This post is a real tuning story from my work—from a debate about LIKE vs Regex to the underlying resource picture.
+This post comes from a real performance issue I hit at work. I took a few wrong turns before I understood what was actually slow.
 
 **This is Part 1:** LIKE vs Regex and the I/O vs CPU story. **[Part 2: EXPLAIN, scale, and GIN](/en/posts/postgresql-gin-index-optimization-part-2)** covers how we escaped full table scans.
 
 ---
 
-## Part 1: LIKE vs Regex
+## Part 1: LIKE vs Regex in plain language
 
-### 1. The ETL setup
-It started with ETL’d “finished” data: many tag-like attributes stuffed into one text field, separated by `;`.
+### 1. The setup
+I inherited ETL-shaped data where many tags were packed into one text field, separated by `;`:
 
-Roughly like:
 `tag1;tag2;tag3;tag_VIP;tag_inactive`
 
-Because the pipeline already shaped the data this way, I kept writing SQL against that column without thinking twice.
+So I did the obvious thing: filter with many `LIKE` conditions.
 
-### 2. “Why not Regex? It’s faster.”
-When I drafted filters as a pile of `LIKE '%tag1%' OR LIKE '%tag2%'`, a senior colleague suggested:
-> “Why not fold those into one Regex? It’ll be faster than LIKE.”
+### 2. One comment that hit the real issue
+A senior teammate said:
+> “Merge those LIKE clauses into one Regex. It should run faster.”
 
-### 3. My gut reaction: isn’t it still a full scan?
-With **no** useful index, wouldn’t the database still walk **every row** for either LIKE or Regex?
+My first reaction:
+“If there is no useful index, don’t both approaches still read a lot of rows?”
 
-If both are $O(N)$ over the row count, would Regex really help?
+### 3. We were not disagreeing, just entering from different angles
+We were solving the same problem, but from different starting points: I focused on read cost first, while my teammate focused on compute cost first.
 
-### 4. We were both right—different bottlenecks
-After digging in, **both views were right**; we were staring at **different limits**.
+- **My focus: I/O cost**  
+  Without an index, the database often still scans a large part of the table.
+- **Teammate’s focus: CPU cost**  
+  Many `LIKE`s can repeat string checks on the same row.  
+  One Regex often reduces that repeated per-row work.
 
-*   **Me (I/O):** I was thinking about **disk reads**. Without an index, the engine must pull a huge fraction of the table through I/O. That cost exists for **both** LIKE and Regex.
-*   **Them (CPU):** They were thinking about **per-row work**. Many `LIKE` clauses over the same row can mean **$O(M)$** string passes for **$M$** conditions—roughly **$O(N \times M)$** overall. One compiled Regex is usually **one** state-machine pass per row—about **$O(N)$** (still subject to pattern size and backtracking, but you drop the extra **$M$** factor).
+A simple analogy:
+- Many `LIKE`s = reading the same page many times, each time looking for one word.
+- One Regex = reading the page once and checking many words in that pass.
 
-So, given I/O was already painful, Regex could still **cool down a melting CPU**.
+### 4. What I want to pass on
+If your dataset is small, Regex alone may already feel much better.  
+At larger scale, syntax tweaks are not enough. You need to change how the database reaches the data.
+
+### Conclusion
+
+> Regex can reduce CPU work, but if the query still scans most rows, I/O remains the real bottleneck.
 
 ---
 
