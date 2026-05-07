@@ -95,8 +95,6 @@ export interface NavigationLink {
 
 const { main }: { main: NavigationLink[] } = menu;
 
-const currentPath = Astro.url.pathname;
-
 const navLocale: "zh" | "en" = path.startsWith("/en") ? "en" : "zh";
 
 function localizeMainLink(item: NavigationLink): NavigationLink {
@@ -130,9 +128,7 @@ function isNavLinkActive(href: string): boolean {
 const logoHomeHref = navLocale === "en" ? "/en" : "/";
 ---
 
-<header
-  class={`header ${currentPath === "/" || currentPath === "/en" ? "fixed" : "sticky"}`}
->
+<header class="header sticky">
   <nav class="navbar container">
     <!-- logo -->
     <div class="order-0">
