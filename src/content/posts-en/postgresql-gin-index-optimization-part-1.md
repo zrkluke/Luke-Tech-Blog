@@ -11,7 +11,10 @@ image: "/images/post/postgresql-gin-index-optimization-cover.png"
 
 This post comes from a real performance issue I hit at work. I took a few wrong turns before I understood what was actually slow.
 
-**This is Part 1:** LIKE vs Regex and the I/O vs CPU story. **[Part 2: EXPLAIN, scale, and GIN](/en/posts/postgresql-gin-index-optimization-part-2)** covers how we escaped full table scans.
+**This is Part 1:** LIKE vs Regex and the I/O vs CPU story. The next two parts go deeper:
+
+- **[Part 2: Reading EXPLAIN to see where Seq Scan hides](/en/posts/postgresql-gin-index-optimization-part-2)**
+- **[Part 3: Turning tags into an index with Array + GIN](/en/posts/postgresql-gin-index-optimization-part-3)**
 
 ---
 
@@ -54,4 +57,7 @@ At larger scale, syntax tweaks are not enough. You need to change how the databa
 
 ---
 
-**Part 2** walks through `EXPLAIN ANALYZE`, tens of millions of rows, and the **Array + GIN** mental model: **[PostgreSQL performance (Part 2)](/en/posts/postgresql-gin-index-optimization-part-2)**.
+Part 2 dissects LIKE and Regex with `EXPLAIN ANALYZE`; Part 3 builds the **Array + GIN** solution:
+
+- **[PostgreSQL Optimization (Part 2): Reading EXPLAIN to see where Seq Scan hides](/en/posts/postgresql-gin-index-optimization-part-2)**
+- **[PostgreSQL Optimization (Part 3): Turning tags into an index with Array + GIN](/en/posts/postgresql-gin-index-optimization-part-3)**

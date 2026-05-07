@@ -11,7 +11,10 @@ image: "/images/post/postgresql-gin-index-optimization-cover.png"
 
 這篇文章是我在工作上真的卡住過的一次效能問題。中間繞了一些路，最後才把真正的瓶頸抓出來。
 
-**本篇為上集**，先談 LIKE 與 Regex 的抉擇與 I/O／CPU 迷思；**[下集：EXPLAIN、資料規模與 GIN 索引](/posts/postgresql-gin-index-optimization-part-2)** 接著談如何打破全表掃描。
+**本篇為上集**，先談 LIKE 與 Regex 的抉擇與 I/O／CPU 迷思；接續兩集分別深入：
+
+- **[中集：用 EXPLAIN 看見 Seq Scan 的真相](/posts/postgresql-gin-index-optimization-part-2)**
+- **[下集：用 Array + GIN 把標籤變成索引](/posts/postgresql-gin-index-optimization-part-3)**
 
 ---
 
@@ -52,4 +55,7 @@ image: "/images/post/postgresql-gin-index-optimization-cover.png"
 
 ---
 
-下集從 `EXPLAIN ANALYZE` 談起，一路談到五千萬筆規模下的 I/O 與 **Array + GIN** 的「抽屜」思維：**[PostgreSQL 效能優化（下）](/posts/postgresql-gin-index-optimization-part-2)**。
+中集從 `EXPLAIN ANALYZE` 拆解 LIKE 與 Regex 的真實成本，下集則動手實作 **Array + GIN**：
+
+- **[PostgreSQL 效能優化（中）：用 EXPLAIN 看見 Seq Scan 的真相](/posts/postgresql-gin-index-optimization-part-2)**
+- **[PostgreSQL 效能優化（下）：用 Array + GIN 把標籤變成索引](/posts/postgresql-gin-index-optimization-part-3)**
