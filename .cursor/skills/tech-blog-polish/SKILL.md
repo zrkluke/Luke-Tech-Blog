@@ -115,14 +115,52 @@ Keep the original core idea, but improve readability, logic flow, and audience f
 - `本質上...`
 - `值得注意的是...`
 - `總而言之...`
-- `不是A，而是B` (overused rhetorical frame)
+- The whole "contrast frame" family — see anti-pattern below.
 
-### Rewrite preference
+### Anti-pattern: contrast frames (不是A而是B / 與其A，B / "not X, it's Y")
+
+The whole contrast-frame family reads as AI cadence and must be avoided, even when the contrast feels natural.
+
+ZH variants to avoid (all equivalent in feel):
+- `不是A，而是B`
+- `與其A，B`
+- `比起A，更B`
+- `重點不在A，而在B`
+- `A 不重要，B 才重要`
+
+EN variants to avoid (all equivalent in feel):
+- `it's not X, it's Y`
+- `isn't X — it's Y`
+- `rather than X, Y`
+- `not X but Y`
+- `forget X. Y` (still implicitly negates A)
+
+Why it's bad:
+- It manufactures a strawman (A) just to elevate B.
+- Two sentences in a row using this frame is an instant tell of AI writing.
+- The reader rarely needed the negation to understand B.
+- Demoting A to a subordinate clause (`與其...`, `rather than...`) is the same pattern, just dressed differently — it still smuggles A in.
+
+Required rewrite: drop A entirely, state B directly.
+
+Examples:
+- Before: `這次沉澱下來的不是步驟，而是幾個基本功。`
+- After: `這次沉澱下來的是幾個基本功。`
+- Before: `與其記住步驟，這幾個基本功更值得帶走。`
+- After: `下面這幾個基本功，之後都會再用到。`
+- Before: `It's not a copy-paste workflow, it's a set of fundamentals.`
+- After: `These fundamentals will resurface on every future problem.`
+- Before: `Rather than memorizing steps, keep these fundamentals.`
+- After: `Keep these fundamentals — they show up on every future problem.`
+
+When you find yourself wanting to write A first to make B sound stronger, that's the cue to delete A and trust B to stand alone.
+
+### General rewrite preference
 
 - Replace abstract lines with concrete action/result wording.
 - Example:
-  - Less human-like: `關鍵不在語法，而在是否改變存取路徑。`
-  - Preferred: `真正差別不在你把 SQL 寫得多漂亮，而是你有沒有讓資料庫改走索引那條路。`
+  - Less human-like: `關鍵在於是否改變存取路徑。`
+  - Preferred: `真正拉開差距的是有沒有讓查詢改走索引那條路。`
 
 ## Highlight rule: use blockquote for key takeaway
 
