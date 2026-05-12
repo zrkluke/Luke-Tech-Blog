@@ -1,11 +1,11 @@
 ---
 title: "關於我"
-meta_title: "關於 Luke Kong | Luke Tech Blog"
-description: "軟體工程師，專精 Python、LLM、AI Agent、Multi-Agent 與 Agentic Workflow；熟悉 ChatGPT、Gemini、Claude；提供 Python 客製化開發與 n8n 流程接案。"
+meta_title: "關於 Luke | Luke Dev Notes"
+description: "軟體工程師，專精 Python、LLM、AI Agent、Multi-Agent 與 Agentic Workflow；熟悉 ChatGPT、Gemini、Claude，專注把 AI 與自動化做成能上線、能維運的系統。"
 draft: false
 ---
 
-## Luke Kong
+## Luke
 
 「把 AI 與自動化做成能上線、能維運的生產力。」
 
@@ -21,11 +21,12 @@ draft: false
 
 ---
 
-### 2. 接案服務
+### 2. 技術關注與工作方式
 
-若你有下列需求，歡迎先描述場景與預期成果，我們再談範圍與時程：
+我關注的是把 AI 能力落到可維運的工作流，而不只是做出一次性的 demo。實作時會特別在意需求拆解、資料流設計、工具邊界、錯誤處理、權限與日誌，讓系統在多人協作與長期維護時仍然清楚可靠。
 
-- **Python 各類客製化開發**：腳本與工具、REST／Webhook API、與第三方服務串接、資料處理與排程等，依你的系統與流程量身打造。
-- **n8n 工作流程**：設計與實作自動化流（觸發條件、節點編排、錯誤重試、與 Slack／表單／資料庫等串接），減少人工重複操作、讓資訊在系統間自動流動。
+- **AI Agent / LLM 應用：** 工具調用、多步驟任務流、結果評估、trace 分析與 production 穩定度。
+- **Python 後端與整合：** API、Webhook、資料處理、排程任務與第三方服務串接。
+- **自動化流程：** 把重複性操作整理成可追蹤、可重跑、可交接的流程。
 
-準備好提升營運效率或想把 AI 接進現有流程嗎？歡迎來信與我討論需求（見下方聯絡方式）。
+我喜歡把模糊需求整理成明確的技術方案，再用小步交付的方式驗證方向，逐步把系統推到穩定可用。

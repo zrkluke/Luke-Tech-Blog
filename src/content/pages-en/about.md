@@ -1,11 +1,11 @@
 ---
 title: "About"
-meta_title: "About | Luke Kong | Luke Tech Blog"
-description: "Software engineer specializing in Python, LLMs, AI agents, multi-agent systems, and agentic workflows; comfortable with ChatGPT, Gemini, and Claude; freelance Python development and n8n automation."
+meta_title: "About | Luke | Luke Dev Notes"
+description: "Software engineer specializing in Python, LLMs, AI agents, multi-agent systems, and agentic workflows; comfortable with ChatGPT, Gemini, and Claude, focused on production-ready AI and automation systems."
 draft: false
 ---
 
-## Luke Kong
+## Luke
 
 Turning **AI and automation** into **production-ready, maintainable** systems.
 
@@ -21,13 +21,12 @@ I hold **Azure AI Engineer** and **AWS Solutions Architect** certifications, and
 
 ---
 
-### 2. Freelance / contract work
+### 2. Technical Focus & Working Style
 
-If you need help with any of the following, share the scenario and expected outcomes first; we can then align scope and timeline:
+I care about turning AI capabilities into maintainable workflows, not just one-off demos. In implementation, I pay close attention to requirement breakdown, data flow design, tool boundaries, error handling, permissions, and logging so systems remain understandable in team environments and over long-term maintenance.
 
-- **Custom Python development:** scripts and tools, REST / webhook APIs, third-party integrations, data processing, scheduling—tailored to your stack and processes.
-- **n8n workflows:** design and implementation (triggers, node layout, retries, Slack / forms / databases, etc.) to cut manual work and move data between systems.
+- **AI agents / LLM applications:** tool use, multi-step task flows, result evaluation, trace analysis, and production stability.
+- **Python backend integrations:** APIs, webhooks, data processing, scheduled jobs, and third-party service integrations.
+- **Automation workflows:** turning repetitive operations into traceable, rerunnable, and handoff-friendly processes.
 
----
-
-Ready to improve operations or wire AI into existing flows? Reach out by email (see below).
+I like translating ambiguous needs into clear technical plans, then validating direction through small, shippable increments until the system becomes stable and useful.

@@ -1,14 +1,14 @@
 {
   "site": {
-    "title": "Luke Tech Blog",
-    "base_url": "https://luke-tech-blog.vercel.app",
+    "title": "Luke Dev Notes",
+    "base_url": "https://lukedevnotes.com",
     "base_path": "/",
     "trailing_slash": false,
     "favicon": "/images/favicon.png",
     "logo": "",
     "logo_width": "197",
     "logo_height": "31",
-    "logo_text": "Luke Tech Blog",
+    "logo_text": "Luke Dev Notes",
     "contact_email": "zrkong0309@gmail.com"
   },
 
@@ -17,7 +17,7 @@
   },
 
   "params": {
-    "copyright": "© 2026 Luke Tech Blog"
+    "copyright": "© 2026 Luke Dev Notes"
   },
 
   "google_tag_manager": {
@@ -28,6 +28,6 @@
   "metadata": {
     "meta_author": "Luke Kong",
     "meta_image": "/images/og-image.png",
-    "meta_description": "Software engineer specializing in Python, LLMs, AI agents, multi-agent systems, and agentic workflows; comfortable with ChatGPT, Gemini, and Claude; freelance Python development and n8n automation."
+    "meta_description": "Software engineer specializing in Python, LLMs, AI agents, multi-agent systems, and agentic workflows; comfortable with ChatGPT, Gemini, and Claude; focused on production-ready AI and automation systems."
   }
 }
