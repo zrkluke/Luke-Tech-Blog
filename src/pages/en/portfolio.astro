@@ -1,13 +1,13 @@
 ---
-import AboutContact from "@/components/AboutContact.astro";
 import Base from "@/layouts/Base.astro";
 import { markdownify } from "@/lib/utils/textConverter";
-import { Image } from "astro:assets";
 import { getEntry, render } from "astro:content";
 
-const page = await getEntry("pagesEn", "about");
+const page = await getEntry("pagesEn", "portfolio");
 if (!page) {
-  throw new Error("Missing English About page (src/content/pages-en/about.md)");
+  throw new Error(
+    "Missing English Portfolio page (src/content/pages-en/portfolio.md)",
+  );
 }
 const { title, meta_title, description, image } = page.data;
 const { Content } = await render(page);
@@ -23,16 +23,8 @@ const { Content } = await render(page);
   <section class="section">
     <div class="container">
       <h1 set:html={markdownify(title)} class="h2 mb-8 text-primary" />
-      <Image
-        src="/images/author/luke-avatar.png"
-        alt="Luke Kong avatar"
-        width={220}
-        height={220}
-        class="mx-auto mb-10 h-40 w-40 rounded-full object-cover shadow md:h-52 md:w-52"
-      />
       <div class="content">
         <Content />
-        <AboutContact locale="en" />
       </div>
     </div>
   </section>

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-labelledby="title desc">
+  <title id="title">n8n Threads crawler workflow</title>
+  <desc id="desc">Schedule Trigger connects to Apify Actor, then sends results to Telegram.</desc>
+  <rect width="1200" height="420" fill="#f8fafc"/>
+  <path d="M0 0h1200v420H0z" fill="#fff"/>
+  <g opacity=".75">
+    <path d="M0 70h1200M0 140h1200M0 210h1200M0 280h1200M0 350h1200" stroke="#d7dde7" stroke-width="1" stroke-dasharray="3 12"/>
+    <path d="M80 0v420M160 0v420M240 0v420M320 0v420M400 0v420M480 0v420M560 0v420M640 0v420M720 0v420M800 0v420M880 0v420M960 0v420M1040 0v420M1120 0v420" stroke="#d7dde7" stroke-width="1" stroke-dasharray="3 12"/>
+  </g>
+  <g transform="translate(88 96)">
+    <rect width="176" height="152" rx="22" fill="#fff" stroke="#d9dee8" stroke-width="2"/>
+    <circle cx="88" cy="58" r="30" fill="#fff" stroke="#3f3f46" stroke-width="5"/>
+    <path d="M88 38v23l-16 10" fill="none" stroke="#3f3f46" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="88" y="190" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="24" fill="#111827">Schedule Trigger</text>
+  </g>
+  <g transform="translate(290 169)">
+    <circle cx="0" cy="0" r="12" fill="#fff" stroke="#a1a8b3" stroke-width="2"/>
+    <path d="M12 0h235" stroke="#a1a8b3" stroke-width="3"/>
+    <circle cx="247" cy="0" r="12" fill="#fff" stroke="#a1a8b3" stroke-width="2"/>
+  </g>
+  <g transform="translate(537 96)">
+    <rect width="176" height="152" rx="22" fill="#fff" stroke="#d9dee8" stroke-width="2"/>
+    <g transform="translate(55 40)">
+      <path d="M0 0h34l-34 45z" fill="#2fb565"/>
+      <path d="M34 0h34v45z" fill="#3267e3"/>
+      <path d="M0 72h68L34 27z" fill="#ff7a1a"/>
+      <path d="M20 72h28L34 53z" fill="#fff"/>
+    </g>
+    <text x="88" y="190" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="24" fill="#111827">Run Apify Actor</text>
+    <text x="88" y="222" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" fill="#8a93a3">get dataset</text>
+  </g>
+  <g transform="translate(739 169)">
+    <circle cx="0" cy="0" r="12" fill="#fff" stroke="#a1a8b3" stroke-width="2"/>
+    <path d="M12 0h235" stroke="#a1a8b3" stroke-width="3"/>
+    <circle cx="247" cy="0" r="12" fill="#fff" stroke="#a1a8b3" stroke-width="2"/>
+  </g>
+  <g transform="translate(986 96)">
+    <rect width="176" height="152" rx="22" fill="#fff" stroke="#d9dee8" stroke-width="2"/>
+    <circle cx="88" cy="62" r="36" fill="#37aee2"/>
+    <path d="M68 61l54-22-10 55-16-18-17 16 3-23z" fill="#fff"/>
+    <text x="88" y="190" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="24" fill="#111827">Telegram Bot</text>
+    <text x="88" y="222" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" fill="#8a93a3">send results</text>
+  </g>
+  <g transform="translate(40 186)">
+    <path d="M15 0l-10 18h12l-8 20 24-27H20l9-11z" fill="#ff6b4a"/>
+  </g>
+  <g transform="translate(1168 155)">
+    <rect width="28" height="28" rx="5" fill="#e5e7eb"/>
+    <path d="M14 8v12M8 14h12" stroke="#6b7280" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>

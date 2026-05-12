@@ -41,6 +41,18 @@ if (path === "/") {
   langNav = { zhHref: "/about", enHref: "/en/about", current: "zh" };
 } else if (path === "/en/about") {
   langNav = { zhHref: "/about", enHref: "/en/about", current: "en" };
+} else if (path === "/portfolio") {
+  langNav = {
+    zhHref: "/portfolio",
+    enHref: "/en/portfolio",
+    current: "zh",
+  };
+} else if (path === "/en/portfolio") {
+  langNav = {
+    zhHref: "/portfolio",
+    enHref: "/en/portfolio",
+    current: "en",
+  };
 } else {
   const zhPaged = path.match(/^\/page\/(\d+)$/);
   if (zhPaged?.[1]) {
@@ -112,6 +124,13 @@ function localizeMainLink(item: NavigationLink): NavigationLink {
       url: navLocale === "en" ? "/en/about" : "/about",
     };
   }
+  if (item.url === "/portfolio") {
+    return {
+      ...item,
+      name: navLocale === "en" ? "Portfolio" : "作品集",
+      url: navLocale === "en" ? "/en/portfolio" : "/portfolio",
+    };
+  }
   return item;
 }
 
@@ -122,6 +141,8 @@ function isNavLinkActive(href: string): boolean {
   if (href === "/en") return path === "/en";
   if (href === "/about") return path === "/about";
   if (href === "/en/about") return path === "/en/about";
+  if (href === "/portfolio") return path === "/portfolio";
+  if (href === "/en/portfolio") return path === "/en/portfolio";
   return path === href;
 }
 

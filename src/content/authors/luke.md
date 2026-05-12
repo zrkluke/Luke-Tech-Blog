@@ -1,6 +1,6 @@
 ---
 title: "Luke Kong"
-image: "/images/author/john-doe.jpg"
+image: "/images/author/luke-avatar.png"
 description: "AI Agent 與自動化流程架構師 · Azure AI Engineer · AWS 雲端架構師"
 ---
 
