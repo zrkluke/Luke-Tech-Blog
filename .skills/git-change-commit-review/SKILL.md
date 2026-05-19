@@ -86,7 +86,8 @@ disable-model-invocation: true
 - 主旨要寫「目的」，不要只列檔名。
 - 優先使用動詞開頭：add / fix / refactor / docs / chore / test。
 - 簡短明確，避免空泛詞（update stuff, minor changes）。
-- 若使用者未指定語言，預設可用英文 conventional style；若使用者慣用中文，提供中文版本一起參考。
+- 一律使用中文撰寫 commit message，包含主旨與 body。
+- 可保留 conventional commit type / scope 前綴，例如 `content(posts):`、`chore(cursor):`，但冒號後的描述要使用中文。
 
 ## Commit type convention for this repository
 
