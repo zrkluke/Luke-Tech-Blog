@@ -1,24 +1,43 @@
 ---
 import Base from "@/layouts/Base.astro";
-import { getTaxonomy } from "@/lib/taxonomyParser.astro";
-import { humanize } from "@/lib/utils/textConverter";
+import { getSinglePage } from "@/lib/contentParser.astro";
+import { slugify } from "@/lib/utils/textConverter";
 
-const categories = await getTaxonomy("posts", "categories");
+const posts = await getSinglePage("posts");
+const categories = posts
+  .flatMap((post) => post.data.categories)
+  .reduce((acc, category) => {
+    const slug = slugify(category);
+    if (!slug) return acc;
+
+    const current = acc.get(slug);
+    acc.set(slug, {
+      title: current?.title ?? category,
+      slug,
+      count: (current?.count ?? 0) + 1,
+    });
+    return acc;
+  }, new Map<string, { title: string; slug: string; count: number }>());
+
+const categoryItems = Array.from(categories.values()).sort((a, b) =>
+  a.title.localeCompare(b.title),
+);
 ---
 
-<Base title={"categories"}>
+<Base title="文章分類">
   <section class="section">
-    <div class="container text-center">
-      <h1 class="h2 mb-16">Categories</h1>
-      <ul class="space-x-4">
+    <div class="container">
+      <h1 class="h2 mb-12 text-center">文章分類</h1>
+      <ul class="mx-auto grid max-w-4xl gap-4 sm:grid-cols-2">
         {
-          categories.map((category) => (
-            <li class="inline-block">
+          categoryItems.map((category) => (
+            <li>
               <a
-                href={`/categories/${category}`}
-                class="rounded-lg bg-light px-4 py-2 text-text-dark transition hover:bg-primary hover:text-white"
+                href={`/categories/${category.slug}`}
+                class="flex items-center justify-between rounded border border-border bg-white px-5 py-4 text-text-dark shadow-sm transition hover:border-primary hover:text-primary"
               >
-                &#8226; {humanize(category || "")}
+                <span class="font-medium">{category.title}</span>
+                <span class="text-sm text-text-light">{category.count} 篇</span>
               </a>
             </li>
           ))

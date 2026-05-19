@@ -1,10 +1,14 @@
 import { plainify } from "@/lib/utils/textConverter";
 import Fuse from "fuse.js";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 export type SearchItem = {
   slug: string;
-  data: any;
-  content: any;
+  title: string;
+  description: string;
+  categories: string[];
+  categorySlugs: Array<string | null>;
+  tags: string[];
+  content: string;
 };
 
 interface Props {
@@ -15,6 +19,16 @@ interface SearchResult {
   item: SearchItem;
   refIndex: number;
 }
+
+const normalizeSearchText = (value: unknown) =>
+  String(value ?? "").toLowerCase();
+
+const exactSearchFields = (item: SearchItem) => [
+  item.title,
+  item.description,
+  ...item.categories,
+  ...item.tags,
+];
 
 export default function SearchBar({ searchList }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -27,12 +41,16 @@ export default function SearchBar({ searchList }: Props) {
     setInputVal(e.currentTarget.value);
   };
 
-  const fuse = new Fuse(searchList, {
-    keys: ["data.title", "data.categories", "data.tags"],
-    includeMatches: true,
-    minMatchCharLength: 2,
-    threshold: 0.5,
-  });
+  const fuse = useMemo(
+    () =>
+      new Fuse(searchList, {
+        keys: ["title", "description", "content", "categories", "tags"],
+        includeMatches: true,
+        minMatchCharLength: 2,
+        threshold: 0.35,
+      }),
+    [searchList],
+  );
 
   useEffect(() => {
     const searchUrl = new URLSearchParams(window.location.search);
@@ -46,7 +64,20 @@ export default function SearchBar({ searchList }: Props) {
   }, []);
 
   useEffect(() => {
-    let inputResult = inputVal.length > 2 ? fuse.search(inputVal) : [];
+    const keyword = inputVal.trim();
+    const normalizedKeyword = normalizeSearchText(keyword);
+    const inputResult =
+      keyword.length > 3
+        ? fuse.search(keyword)
+        : keyword.length > 1
+          ? searchList
+              .filter((item) =>
+                exactSearchFields(item).some((field) =>
+                  normalizeSearchText(field).includes(normalizedKeyword),
+                ),
+              )
+              .map((item, refIndex) => ({ item, refIndex }))
+          : [];
     setSearchResults(inputResult);
 
     if (inputVal.length > 0) {
@@ -58,31 +89,31 @@ export default function SearchBar({ searchList }: Props) {
     } else {
       history.pushState(null, "", window.location.pathname);
     }
-  }, [inputVal]);
+  }, [inputVal, fuse, searchList]);
 
   return (
     <div className="min-h-[45vh]">
-      <input
-        className="form-input w-full"
-        placeholder="Search posts"
-        type="text"
-        name="search"
-        value={inputVal}
-        onChange={handleChange}
-        autoComplete="off"
-        autoFocus
-        ref={inputRef}
-      />
+      <div className="mx-auto max-w-3xl">
+        <h1 className="h2 mb-6 text-center">搜尋文章</h1>
+        <input
+          className="form-input min-h-12 w-full"
+          placeholder="搜尋標題、摘要、內文、分類或標籤"
+          type="search"
+          name="search"
+          value={inputVal}
+          onChange={handleChange}
+          autoComplete="off"
+          autoFocus
+          ref={inputRef}
+        />
+      </div>
 
       <div className="row">
         <div className="mx-auto px-0 lg:col-8">
           {inputVal.length > 1 && (
             <h2 className="mt-8 mb-4 font-normal">
-              Found {searchResults?.length}
-              {searchResults?.length && searchResults?.length === 1
-                ? " result"
-                : " results"}{" "}
-              for <span className="text-primary">{inputVal}</span>
+              找到 {searchResults?.length ?? 0} 篇與{" "}
+              <span className="text-primary">{inputVal}</span> 相關的文章
             </h2>
           )}
           {searchResults?.length ? (
@@ -97,25 +128,34 @@ export default function SearchBar({ searchList }: Props) {
                       href={`/posts/${item.slug}`}
                       className="block font-normal text-primary hover:underline"
                     >
-                      {item.data.title}
+                      {item.title}
                     </a>
                   </h3>
                   <p className="mt-2.5 text-lg text-text line-clamp-2">
-                    {plainify(item.content)}
+                    {item.description || plainify(item.content)}
                   </p>
-                  <p className="mt-3 text-lg">
-                    Categories:{" "}
-                    {item.data.categories?.map(
-                      (category: string, index: number) => (
-                        <a key={index} href="#">
+                  <p className="mt-3 flex flex-wrap gap-2 text-lg">
+                    {item.categories?.map((category, index) => {
+                      const categorySlug = item.categorySlugs[index];
+
+                      return categorySlug ? (
+                        <a
+                          key={category}
+                          href={`/categories/${categorySlug}`}
+                          className="rounded-md bg-light px-3 py-1 text-sm text-text-dark hover:bg-primary hover:text-white"
+                        >
                           {category}
                         </a>
-                      ),
-                    )}
+                      ) : null;
+                    })}
                   </p>
                 </div>
               ))}
             </div>
+          ) : inputVal.length > 1 ? (
+            <p className="rounded px-6 py-8 text-center shadow">
+              目前沒有找到符合「{inputVal}」的文章。
+            </p>
           ) : null}
         </div>
       </div>

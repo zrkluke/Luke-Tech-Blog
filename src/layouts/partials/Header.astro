@@ -131,6 +131,13 @@ function localizeMainLink(item: NavigationLink): NavigationLink {
       url: navLocale === "en" ? "/en/portfolio" : "/portfolio",
     };
   }
+  if (item.url === "/categories") {
+    return {
+      ...item,
+      name: navLocale === "en" ? "Categories" : "分類",
+      url: "/categories",
+    };
+  }
   return item;
 }
 
@@ -143,6 +150,7 @@ function isNavLinkActive(href: string): boolean {
   if (href === "/en/about") return path === "/en/about";
   if (href === "/portfolio") return path === "/portfolio";
   if (href === "/en/portfolio") return path === "/en/portfolio";
+  if (href === "/categories") return path.startsWith("/categories");
   return path === href;
 }
 

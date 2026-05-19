@@ -2,18 +2,23 @@
 import SearchBar from "@/helpers/SearchBar";
 import Base from "@/layouts/Base.astro";
 import { getSinglePage } from "@/lib/contentParser.astro";
+import { slugify } from "@/lib/utils/textConverter";
 
 const posts = await getSinglePage("posts");
 
 // List of items to search in
 const searchList = posts.map((item) => ({
   slug: item.id,
-  data: item.data,
+  title: item.data.title,
+  description: item.data.description ?? "",
+  categories: item.data.categories,
+  categorySlugs: item.data.categories.map((category) => slugify(category)),
+  tags: item.data.tags,
   content: item.body,
 }));
 ---
 
-<Base title={`Search`}>
+<Base title="搜尋">
   <section class="section">
     <div class="container">
       <SearchBar client:load searchList={searchList} />

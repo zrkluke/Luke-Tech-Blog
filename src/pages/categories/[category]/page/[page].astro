@@ -3,11 +3,12 @@ import Post from "@/components/Post.astro";
 import config from "@/config/config.json";
 import Base from "@/layouts/Base.astro";
 import Pagination from "@/layouts/components/Pagination.astro";
+import PostDiscovery from "@/layouts/components/PostDiscovery.astro";
 import { getSinglePage } from "@/lib/contentParser.astro";
 import { getTaxonomy } from "@/lib/taxonomyParser.astro";
 import { sortByDate } from "@/lib/utils/sortFunctions";
 import taxonomyFilter from "@/lib/utils/taxonomyFilter";
-import { markdownify } from "@/lib/utils/textConverter";
+import { humanize, markdownify } from "@/lib/utils/textConverter";
 import type { GetStaticPathsOptions } from "astro";
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
@@ -24,7 +25,7 @@ export const getStaticPaths = async ({ paginate }: GetStaticPathsOptions) => {
       const filterByTags = taxonomyFilter(
         sortByDatePosts,
         "categories",
-        category
+        category,
       );
       return paginate(filterByTags, {
         params: { category: category || "" },
@@ -36,11 +37,13 @@ export const getStaticPaths = async ({ paginate }: GetStaticPathsOptions) => {
 
 const homepage = (await getEntry(
   "homepage",
-  "-index"
+  "-index",
 )) as CollectionEntry<"homepage">;
 const { banner } = homepage.data;
 const { page } = Astro.props;
 const { category } = Astro.params;
+const posts = await getSinglePage("posts");
+const categoryTitle = humanize(category || "");
 ---
 
 <Base title={category}>
@@ -74,8 +77,9 @@ const { category } = Astro.params;
     <div class="container">
       <div class="row px-3">
         <div class="mx-auto px-0 lg:col-8">
+          <PostDiscovery posts={posts} activeCategory={category} />
           <h1 class="h2 mb-8">
-            Posts related to <span class="text-primary">{category}</span> category
+            <span class="text-primary">{categoryTitle}</span> 分類文章
           </h1>
           <div class="rounded px-9 py-12 shadow md:p-[60px]">
             {page.data.map((post) => <Post post={post} />)}

@@ -1,0 +1,75 @@
+---
+import { slugify } from "@/lib/utils/textConverter";
+import type { CollectionEntry } from "astro:content";
+
+type Props = {
+  posts: CollectionEntry<"posts">[];
+  activeCategory?: string;
+};
+
+const { posts, activeCategory } = Astro.props;
+const categories = posts
+  .flatMap((post) => post.data.categories)
+  .reduce((acc, category) => {
+    const slug = slugify(category);
+    if (!slug) return acc;
+
+    const current = acc.get(slug);
+    acc.set(slug, {
+      title: current?.title ?? category,
+      slug,
+      count: (current?.count ?? 0) + 1,
+    });
+    return acc;
+  }, new Map<string, { title: string; slug: string; count: number }>());
+
+const categoryItems = Array.from(categories.values()).sort((a, b) =>
+  a.title.localeCompare(b.title),
+);
+---
+
+<div class="mb-8 rounded px-5 py-6 shadow md:px-8">
+  <form
+    action="/search"
+    method="get"
+    class="mb-6 flex flex-col gap-3 sm:flex-row"
+  >
+    <label for="post-search" class="sr-only">搜尋文章</label>
+    <input
+      id="post-search"
+      class="form-input min-h-12 flex-1"
+      type="search"
+      name="q"
+      placeholder="搜尋文章標題、內文、分類或標籤"
+    />
+    <button class="btn btn-primary min-h-12 shrink-0 px-6" type="submit">
+      搜尋
+    </button>
+  </form>
+
+  {
+    categoryItems.length > 0 && (
+      <nav aria-label="文章分類">
+        <div class="mb-3 text-sm font-semibold text-text-dark">文章分類</div>
+        <ul class="flex flex-wrap gap-2">
+          {categoryItems.map((category) => (
+            <li>
+              <a
+                href={`/categories/${category.slug}`}
+                class:list={[
+                  "inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm transition",
+                  activeCategory === category.slug
+                    ? "border-primary bg-primary text-white"
+                    : "border-border bg-white text-text hover:border-primary hover:text-primary",
+                ]}
+              >
+                <span>{category.title}</span>
+                <span class="text-xs opacity-75">{category.count}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )
+  }
+</div>
