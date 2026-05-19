@@ -1,5 +1,31 @@
 # Agent Instructions
 
+## Repository Expectations
+
+- Follow the existing project structure and style before introducing new patterns.
+- Keep shared agent skills in `.skills/`.
+- Do not duplicate skill files under tool-specific directories.
+
+## Commands
+
+- Install dependencies: `npm install`
+- Start dev server: `npm run dev`
+- Build: `npm run build`
+- Type check: `npm run check`
+
+## Verification
+
+- Run `npm run build` after changing Astro, React, styling, or content rendering code.
+- Run `npm run check` after changing TypeScript or Astro components.
+- For documentation-only or skill-only changes, no build is required unless behavior changes.
+
+## Project Structure
+
+- Blog posts live in `src/content/posts/`.
+- English posts live in `src/content/posts-en/`.
+- Shared agent skills live in `.skills/`.
+- Static assets live in `public/`.
+
 ## Shared Skills
 
 Project skills live in `.skills/`.
@@ -11,4 +37,7 @@ Before handling a request, check whether it matches one of these skill descripti
 
 When a request matches a skill, read that skill's `SKILL.md` and follow it as the source of truth for the task.
 
-Do not maintain duplicate skill files under tool-specific directories.
+## Git Workflow
+
+- Use the git change review skill when reviewing changed files or proposing commit messages.
+- Every commit must include both a subject and a body.
