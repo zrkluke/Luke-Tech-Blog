@@ -1,6 +1,6 @@
 ---
 name: git-change-commit-review
-description: Review changed files and staged files, summarize what changed, propose commit messages, and decide whether changes should be split into multiple commits. Use when the user asks to review changes/files or asks for commit strategy, commit message, or commit split advice.
+description: Review changed files and staged files, summarize what changed, propose Traditional Chinese commit messages, and decide whether changes should be split into multiple commits. Use when the user asks to review changes/files or asks for commit strategy, commit message, or commit split advice.
 disable-model-invocation: true
 ---
 
@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 ## Goal
 
-專門查看 changed files 與 staged files，幫使用者確認這些檔案做了哪些改變，判斷 commit message 該怎麼寫，以及是否要拆分多個 commit。
+專門查看 changed files 與 staged files，幫使用者確認這些檔案做了哪些改變，判斷中文 commit message 該怎麼寫，以及是否要拆分多個 commit。
 
 ## Trigger phrases
 
@@ -84,10 +84,12 @@ disable-model-invocation: true
 ## Message writing style
 
 - 主旨要寫「目的」，不要只列檔名。
-- 優先使用動詞開頭：add / fix / refactor / docs / chore / test。
+- commit message 一律使用繁體中文撰寫，包含主旨與 body。
+- 可保留 conventional commit type / scope 前綴，例如 `feat(blog):`、`content(posts):`、`chore(cursor):`，但冒號後的描述必須是中文。
+- 優先使用中文動詞描述目的，例如「新增」、「修正」、「重構」、「整理」、「補上」、「更新」。
 - 簡短明確，避免空泛詞（update stuff, minor changes）。
-- 一律使用中文撰寫 commit message，包含主旨與 body。
-- 可保留 conventional commit type / scope 前綴，例如 `content(posts):`、`chore(cursor):`，但冒號後的描述要使用中文。
+- 不要輸出英文描述型 commit，例如 `feat(blog): add category discovery and improve search`。
+- 改成中文描述，例如 `feat(blog): 新增文章分類入口並改善搜尋`。
 
 ## Commit type convention for this repository
 
@@ -95,3 +97,4 @@ disable-model-invocation: true
 - Cursor 規則、skill、設定檔（`.cursor/`）優先用：`chore(cursor): ...`
 - 程式功能新增用：`feat(...): ...`
 - 程式 bug 修正用：`fix(...): ...`
+- type / scope 可用英文；冒號後一律用繁體中文。
