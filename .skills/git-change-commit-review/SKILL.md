@@ -83,6 +83,17 @@ disable-model-invocation: true
 
 ## Message writing style
 
+### Commit body policy
+
+- Every commit must include a body, even for small changes.
+- When proposing commit messages, always provide both:
+  - a subject line
+  - a 1-2 sentence body in Traditional Chinese
+- When executing `git commit`, use multiple `-m` arguments so the body is included:
+  - `git commit -m "type(scope): subject" -m "Body sentence one. Body sentence two."`
+- Do not create single-line commits unless the user explicitly asks for "subject only" or "no body".
+- The body should explain what changed and why, not repeat the subject.
+
 - 主旨要寫「目的」，不要只列檔名。
 - commit message 一律使用繁體中文撰寫，包含主旨與 body。
 - 可保留 conventional commit type / scope 前綴，例如 `feat(blog):`、`content(posts):`、`chore(cursor):`，但冒號後的描述必須是中文。
