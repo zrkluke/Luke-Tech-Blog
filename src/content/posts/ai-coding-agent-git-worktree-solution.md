@@ -228,6 +228,22 @@ projects/
 
 第三，多個 worktree 可能各自需要安裝 dependencies。即使它們共享 Git 物件，工作目錄裡的 `node_modules`、build cache、`.env` 等檔案仍然要自己管理。
 
+這裡推薦一個實戰細節：如果你的專案使用 **`pnpm`**（非常適合 Astro 專案），因為其獨特的「全域硬體連結儲存庫（Global Hard-Link Store）」設計，在每個 worktree 目錄執行 `pnpm install` 不僅能秒級完成，而且幾乎**不額外佔用磁碟空間**。這能完美解決多 worktree 重複安裝套件又慢又佔空間的痛點。
+
+此外，為了避免在桌面開啟多個 Cursor 或 VS Code 視窗造成的混亂，你可以使用 VS Code 的 **Multi-root Workspace** 功能。在根目錄建立一個 `.code-workspace` 檔案，同時引入主目錄與多個活躍的 worktree：
+
+```json
+{
+  "folders": [
+    { "path": "luke-tech-blog" },
+    { "path": "../luke-tech-blog.prompt-eval" },
+    { "path": "../luke-tech-blog.search-page" }
+  ]
+}
+```
+
+這樣一來，你就可以在**同一個 Cursor 視窗的側邊欄**中，同時管理與檢視不同工作區的檔案與變更，協調邊界與審查 diff 都會變得極度輕鬆。
+
 第四，worktree 只能隔離工作空間，不能消除 merge conflict。
 
 如果兩個 Agent 同時修改同一個核心檔案，最後合併時還是可能衝突。Worktree 能避免工作期間互相踩檔案狀態，任務邊界仍然要由人類先設計好。

@@ -11,7 +11,7 @@ image: "/images/post/ai-coding-agent-shared-instructions-cover.png"
 
 AI coding tools have been arriving one after another.
 
-Cursor (2023), Claude Code (February 2025), Codex CLI / Codex coding agent (April-May 2025), and even Google Antigravity (November 2025, which I have not used yet) all bring their own configuration files, rule formats, and workflows. At first, I also wondered whether every new tool meant learning a new setup, and whether every tool needed its own project instruction file.
+Cursor (2023), Claude Code (February 2025), Codex CLI / Codex coding agent (April-May 2025), and even Google Antigravity (November 2025, which has now become one of my primary tools) all bring their own configuration files, rule formats, and workflows. At first, I also wondered whether every new tool meant learning a new setup, and whether every tool needed its own project instruction file.
 
 I eventually changed the way I looked at the problem.
 
@@ -76,6 +76,10 @@ Cursor also supports root `AGENTS.md` as simple project instructions. For a repo
 
 My default choice is to let `AGENTS.md` carry the shared entry point first. Cursor rules can come in when I actually need path-scoped or trigger-specific behavior.
 
+### Google Antigravity: Native Support for AGENTS.md
+
+Google's Antigravity (released in late 2025, and now a core part of my development suite) natively supports `AGENTS.md` in the project root. It reads this file upon startup to understand the repository's build, test, and command constraints. When we want to introduce complex, repeatable developer workflows, we can direct it to read the `.skills/` directory from within `AGENTS.md` (e.g., for article polishing or git reviews), allowing a clean, unified rule structure to run seamlessly inside Antigravity's autonomous IDE environment.
+
 ## A Minimal Shared AGENTS.md Strategy
 
 `AGENTS.md` should answer one question: how does this repo expect work to be done?
@@ -131,6 +135,9 @@ In the next post, I will use this blog repo as the concrete example: `AGENTS.md`
 - [Claude Code: Skills](https://code.claude.com/docs/en/agent-sdk/skills)
 - [Cursor: Rules](https://docs.cursor.com/context/rules-for-ai)
 - [Google Developers Blog: Build with Google Antigravity](https://developers.googleblog.com/en/build-with-google-antigravity-our-new-agentic-development-platform/)
+- [Google Antigravity Official Portal](https://antigravity.google/)
+- [AGENTS.md Guide: Cross-Tool Rules for Antigravity](https://antigravity.codes/)
+- [AGENTS.md Official Standard](https://agents.md/)
 - [OpenAI: Introducing Codex](https://openai.com/index/introducing-codex/)
 - [TechCrunch: Anysphere raises $8M from OpenAI to build an AI-powered IDE](https://techcrunch.com/2023/10/11/anysphere-raises-8m-from-openai-to-build-an-ai-powered-ide/)
 - [TechCrunch: Anthropic launches Claude Code research preview](https://techcrunch.com/2025/02/24/anthropic-launches-a-new-ai-model-that-thinks-as-long-as-you-want/)

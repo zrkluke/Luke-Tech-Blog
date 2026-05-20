@@ -11,7 +11,7 @@ image: "/images/post/ai-coding-agent-shared-instructions-cover.png"
 
 AI coding tools 這幾年幾乎是輪流登場。
 
-Cursor（2023）、Claude Code（2025 年 2 月）、Codex CLI / Codex coding agent（2025 年 4-5 月），甚至還有 Google Antigravity（2025 年 11 月，筆者尚未使用）這類工具持續出現。每個工具都有自己的設定檔、規則格式和使用習慣。剛開始我也會想：是不是每換一個工具，就要重新適應一次？是不是每個工具都要維護一份自己的 instruction？
+Cursor（2023）、Claude Code（2025 年 2 月）、Codex CLI / Codex coding agent（2025 年 4-5 月），以及 Google Antigravity（2025 年 11 月）這類工具持續出現。每個工具都有自己的設定檔、規則格式和使用習慣。剛開始我也會想：是不是每換一個工具，就要重新適應一次？是不是每個工具都要維護一份自己的 instruction？
 
 後來我把問題換了一個角度看。
 
@@ -76,6 +76,10 @@ Cursor 官方主要推薦 `.cursor/rules`，因為它可以做更細的規則控
 
 我自己的判斷是：先讓 `AGENTS.md` 承擔共用入口。當規則開始需要分區、分檔、分觸發條件，再讓 Cursor rules 介入。
 
+### Google Antigravity：原生支援 AGENTS.md
+
+Google 於 2025 年底推出的 Antigravity 是一款以 Agent 為核心的強大開發環境。它原生支援讀取專案根目錄的 `AGENTS.md`，並以此作為自主任務執行的決策依據。當我們想進一步導入複雜的 Task Workflow 時，它亦可完美讀取在 `AGENTS.md` 中索引的 `.skills/` 目錄，藉此載入對應的任務規則（例如文章潤飾或 Git 審查），使得「單一規則本體」的理想在 Antigravity 中運行得非常流暢。
+
 ## 共用 AGENTS.md 的最小策略
 
 `AGENTS.md` 很適合回答一個問題：這個 repo 的基本工作方式是什麼？
@@ -131,6 +135,9 @@ CLAUDE.md       # @AGENTS.md
 - [Claude Code: Skills](https://code.claude.com/docs/en/agent-sdk/skills)
 - [Cursor: Rules](https://docs.cursor.com/context/rules-for-ai)
 - [Google Developers Blog: Build with Google Antigravity](https://developers.googleblog.com/en/build-with-google-antigravity-our-new-agentic-development-platform/)
+- [Google Antigravity Official Portal](https://antigravity.google/)
+- [AGENTS.md Guide: Cross-Tool Rules for Antigravity](https://antigravity.codes/)
+- [AGENTS.md Official Standard](https://agents.md/)
 - [OpenAI: Introducing Codex](https://openai.com/index/introducing-codex/)
 - [TechCrunch: Anysphere raises $8M from OpenAI to build an AI-powered IDE](https://techcrunch.com/2023/10/11/anysphere-raises-8m-from-openai-to-build-an-ai-powered-ide/)
 - [TechCrunch: Anthropic launches Claude Code research preview](https://techcrunch.com/2025/02/24/anthropic-launches-a-new-ai-model-that-thinks-as-long-as-you-want/)

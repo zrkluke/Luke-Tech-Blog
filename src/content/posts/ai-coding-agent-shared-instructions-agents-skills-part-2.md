@@ -175,6 +175,14 @@ Claude Code 和 Codex 都有各自的 skills discovery 路徑：
 
 需要 Cursor 依檔案路徑自動套用不同規則時，再加入 `.cursor/rules`。
 
+這裡有一個絕妙的實戰手法：當我們有多個 `.skills/` 流程時，雖然為了避免漂移而把內容收攏在 `.skills/` 目錄中，但我們仍然可以使用 Cursor 的 `.cursor/rules/*.mdc` 機制來作為**自動觸發（Auto-trigger）轉接器**。
+
+例如，你可以建立一個輕量級的 `.cursor/rules/polish-trigger.mdc`，設定 `glob: "src/content/posts/**/*.md"`（只要開啟文章就會觸發），而規則內容僅寫上一行：
+
+> 「當撰寫或修改部落格文章時，請務必先閱讀並遵守 `.skills/tech-blog-polish/SKILL.md` 裡的寫作指南。」
+
+這樣做的好處是，我們完全不需要在 Cursor rules 裡重複複製整套寫作規則，但卻能利用 Cursor 原生的檔案監聽，在 Agent 打開文章檔案的瞬間**自動將該 Skill 載入為 context**。這既能保持 canonical source 的唯一性，又實現了零磨擦的自動化流程。
+
 需要 Claude Code 或 Codex 原生 skills discovery 時，再用 symlink 或同步方式接到 `.skills/`。
 
 這樣做可以讓 tool-specific adapter 晚一點出現，而且每次出現都有明確理由。

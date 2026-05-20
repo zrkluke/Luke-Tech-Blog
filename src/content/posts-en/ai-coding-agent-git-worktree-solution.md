@@ -226,6 +226,22 @@ projects/
 
 Third, each worktree may need its own dependencies. Even if the worktrees share Git objects, files like `node_modules`, build cache, `.env`, and generated outputs still need separate handling.
 
+Here is a practical tip: if your project uses **`pnpm`** (which works wonderfully with Astro projects), its unique global hard-link store design makes running `pnpm install` in each worktree instantaneous while taking **almost zero extra disk space**. This completely solves the disk bloating and slow package installation pain points typical of multi-worktree setups.
+
+Furthermore, to avoid cluttering your desktop with multiple Cursor or VS Code windows, you can leverage VS Code's **Multi-root Workspace** feature. Create a simple `.code-workspace` file in your root and declare your main project folder alongside active worktree folders:
+
+```json
+{
+  "folders": [
+    { "path": "luke-tech-blog" },
+    { "path": "../luke-tech-blog.prompt-eval" },
+    { "path": "../luke-tech-blog.search-page" }
+  ]
+}
+```
+
+This lets you view and manage files across different isolated workspaces from the **sidebar of a single Cursor window**, making diff reviews and task coordination extremely convenient.
+
 Fourth, worktree isolates workspace state. It does not eliminate merge conflicts.
 
 If two Agents edit the same core file, the final merge can still conflict. Worktree prevents them from stepping on each other during execution, but humans still need to design task boundaries first.

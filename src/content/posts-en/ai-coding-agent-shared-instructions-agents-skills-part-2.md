@@ -175,6 +175,14 @@ Use `.skills/<name>/SKILL.md` when the rule is a repeatable task workflow.
 
 Add `.cursor/rules` when Cursor needs path-scoped or trigger-specific behavior.
 
+Here is a clever trick: even though we keep our repeatable workflows inside the `.skills/` directory to prevent rule drift, we can still use Cursor's `.cursor/rules/*.mdc` as **automated triggers (adapters)**.
+
+For example, you can create a lightweight `.cursor/rules/polish-trigger.mdc` that targets `glob: "src/content/posts/**/*.md"`. Inside this file, instead of repeating your guidelines, write a single instruction:
+
+> "When writing or editing blog posts, you MUST read and follow the styling and structure guidelines defined in `.skills/tech-blog-polish/SKILL.md` first."
+
+This gives you the best of both worlds. You do not duplicate a single line of your core rules, yet you leverage Cursor's native file-path triggers to **automatically load the relevant skill into the Agent's context** the moment it opens a post. It is zero-friction automation that preserves the single source of truth.
+
 Expose `.skills/` through `.claude/skills` or `.agents/skills` when native skill discovery becomes important enough to justify the adapter.
 
 This keeps tool-specific files late and intentional.
