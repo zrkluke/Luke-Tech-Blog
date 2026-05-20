@@ -172,6 +172,17 @@ When you find yourself wanting to write A first to make B sound stronger, that's
 - Keep blockquote short: one sentence (max two).
 - Do not place lists, code blocks, or long paragraphs inside the quote.
 
+## Series article links
+
+- When creating, splitting, translating, or polishing a multi-part article series, add explicit links between adjacent parts.
+- The first part must include a clear link to the next part near the ending, before references if references exist.
+- Later parts must include a clear Markdown link back to the previous part near the introduction, before the main body starts.
+- Mentioning "previous post" or "上一篇" in prose is not enough; include an actual clickable link.
+- Use the article language for link text:
+  - Traditional Chinese articles: `下一篇`, `上一篇`, or the full translated title.
+  - English articles: `Next post`, `Previous post`, or the full English title.
+- After adding or changing series links, verify the target route matches the repo's post URL convention.
+
 ### Final tone check before output
 
 1. Remove at least 1 generic abstract sentence if found.
@@ -192,7 +203,8 @@ When polishing an article, follow this order:
 5. Apply voice and style standards to remove AI-like phrasing.
 6. Remove empty claims; add evidence, example, or reasoning.
 7. Tighten sentences: one paragraph, one purpose.
-8. Finish with a conclusion that echoes the opening.
+8. If the article is part of a series, add/check previous and next article links.
+9. Finish with a conclusion that echoes the opening.
 
 ## Output contract
 
