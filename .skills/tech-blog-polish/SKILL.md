@@ -190,6 +190,15 @@ When you find yourself wanting to write A first to make B sound stronger, that's
 3. Read one paragraph aloud mentally; if it sounds like a report template, rewrite it.
 4. Ensure wording is direct and clear, but not hurtful.
 
+## References and Search Citations
+
+- **Search Action Citation Requirement**: If you perform any search actions (e.g., web search, browsing) or gather information from external resources during the writing/polishing process, you MUST compile and list the relevant official documentation, standard specifications, or highly authoritative references at the bottom of the article under a `## 參考資料` (or `## References` for English articles) section.
+- **Mentioned Technologies Citation Requirement**: If any specific external tool, technology, library, framework, or product (such as Astro, Cursor, Antigravity, etc.) is mentioned in the article, its official homepage or standard usage guide MUST be listed in the references.
+- **Reference Entry Standards**:
+  - URLs must be highly precise (linking to the exact feature page or guide, not just a generic landing page).
+  - Test and verify the URLs to ensure they are valid and active.
+  - Multi-language alignment: Traditional Chinese articles should prioritize Traditional Chinese or English official resources, and English articles must use corresponding English resources.
+
 ## Execution checklist
 
 When polishing an article, follow this order:
@@ -204,7 +213,8 @@ When polishing an article, follow this order:
 6. Remove empty claims; add evidence, example, or reasoning.
 7. Tighten sentences: one paragraph, one purpose.
 8. If the article is part of a series, add/check previous and next article links.
-9. Finish with a conclusion that echoes the opening.
+9. Verify search actions and mentioned technologies, and list high-quality, verified reference links in the references section.
+10. Finish with a conclusion that echoes the opening.
 
 ## Output contract
 
