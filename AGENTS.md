@@ -4,7 +4,9 @@
 
 - Follow the existing project structure and style before introducing new patterns.
 - Keep shared agent skills in `.skills/`.
-- Do not duplicate skill files under tool-specific directories.
+- Keep the complete workflow only in `.skills/<skill-name>/SKILL.md`.
+- `.claude/skills/` and `.agents/skills/` are generated native-discovery adapters. Run `npm run skills:sync` after changing skill frontmatter; do not edit the generated files directly.
+- Present every folder structure as a fenced `text` Markdown tree with an explicit root directory and consistent `├──`, `└──`, and `│` branches.
 
 ## Commands
 
@@ -24,11 +26,16 @@
 - Blog posts live in `src/content/posts/`.
 - English posts live in `src/content/posts-en/`.
 - Shared agent skills live in `.skills/`.
+- Native-discovery adapters live in `.claude/skills/` and `.agents/skills/`.
 - Static assets live in `public/`.
 
 ## Shared Skills
 
 Project skills live in `.skills/`.
+
+Claude Code and Codex discover the generated adapters in `.claude/skills/` and
+`.agents/skills/`. After an adapter matches the task, read the corresponding
+`.skills/<skill-name>/SKILL.md` for the complete workflow.
 
 Before handling a request, check whether it matches one of these skill descriptions:
 

@@ -13,6 +13,8 @@
     "typecheck:watch": "node scripts/astro-check.mjs --watch",
     "lint": "prettier -c .",
     "lint:staged": "node scripts/lint-staged.mjs",
+    "skills:sync": "node scripts/sync-skills.mjs",
+    "skills:check": "node scripts/sync-skills.mjs --check",
     "format": "prettier -w .",
     "postedit:check": "npm run typecheck",
     "hooks:install": "git config core.hooksPath .githooks",

@@ -1,143 +1,136 @@
 ---
-title: "一份 AGENTS.md，讓多個 AI Coding Agent 共享專案規則（上）"
-description: "Cursor、Claude Code、Codex 與 Antigravity 這類 AI coding tools 持續出現。與其為每個工具維護一份規則，不如讓 repo 保有唯一的工作指引。"
+title: "一份 AGENTS.md，讓多個 AI 程式開發 Agent 共享專案規則（上）"
+description: "整理 Codex、Claude Code、Antigravity 與 Cursor 如何接到同一份專案規則，並用 AGENTS.md、.skills/ 與輕量 adapter 避免規則失步。"
 date: 2026-05-20T01:00:00Z
+updated: 2026-08-24T00:00:00Z
 authors: ["Luke Kong"]
 categories: ["AI Agent"]
-tags: ["AI Coding Agent", "AGENTS.md", "Claude Code", "OpenAI Codex", "Cursor"]
+tags:
+  [
+    "AI Coding Agent",
+    "AGENTS.md",
+    "Claude Code",
+    "OpenAI Codex",
+    "Antigravity",
+    "Cursor",
+  ]
 audience: "engineer"
 image: "/images/post/ai-coding-agent-shared-instructions-cover.png"
 ---
 
-AI coding tools 這幾年幾乎是輪流登場。
+AI 程式開發工具會一直增加。當 Cursor、Claude Code、Codex、Antigravity 各自帶著一份規則檔進專案，幾個月後常會發現規則彼此已經說了不同的事。
 
-Cursor（2023）、Claude Code（2025 年 2 月）、Codex CLI / Codex coding agent（2025 年 4-5 月），以及 Google Antigravity（2025 年 11 月）這類工具持續出現。每個工具都有自己的設定檔、規則格式和使用習慣。剛開始我也會想：是不是每換一個工具，就要重新適應一次？是不是每個工具都要維護一份自己的 instruction？
+我現在把專案當成穩定入口：共用規則放在 `AGENTS.md`，完整任務流程放在 `.skills/`，工具需要特定探索位置時只放輕量 adapter。工具換了，真正需要維護的內容仍然留在專案裡。
 
-後來我把問題換了一個角度看。
+> 更新（2026-08-24）：本文已配合本專案的原生 skill 探索 adapter 更新。實作細節與 Antigravity、Cursor 的使用方式請接著閱讀 Part 2。
 
-repo 應該成為穩定的工作入口，工具則負責讀懂 repo 裡的規則。只要專案裡有一份清楚、穩定、可版本控管的工作指引，不管今天打開的是 Cursor、Claude Code、Codex，還是下一個新工具，agent 都應該能快速理解這個專案怎麼跑、怎麼測、文章怎麼寫、commit 怎麼下。
+## 1. 四個工具如何接到同一份專案規則
 
-> AI coding tools 會換，但 repo 的工作規則應該只維護一份。
+四個工具的入口不同，但它們都可以回到同一個原則：把跨工具、長期穩定的內容留在專案，讓工具專屬設定只處理載入方式。
 
-註：本文提到的 Codex 指 OpenAI 在 2025 推出的 Codex CLI / Codex coding agent，不是 2021 年的 OpenAI Codex code generation model。
+### Codex：`AGENTS.md` 是專案指引的指令鏈
 
-## 工具越多，規則越容易漂移
+Codex 在開始工作前會讀取 `AGENTS.md`。它會從專案根目錄一路走到目前工作目錄，逐層合併規則；較靠近工作目錄的 `AGENTS.md` 或 `AGENTS.override.md` 會排在後面，因此能覆寫前面的通用規則。
 
-AI coding agent 最怕的情況，不是它不會寫程式，而是它拿到一份過期的專案規則。
+這很適合放全專案都要遵守的資訊：
 
-這件事通常不是故意發生的。比較常見的情境是：一開始只有 Cursor，所以你寫了 `.cursor/rules`。後來開始用 Claude Code，又補了一份 `CLAUDE.md`。再後來想試 Codex，於是多了一份 `AGENTS.md`。每一份文件剛建立時都很合理，但幾個月後它們開始長得不一樣。
+- 專案結構與常用指令
+- 建置、型別檢查與測試規則
+- 提交與審查的期待
+- 共用 skills 的唯一來源
 
-例如：
+如果 `src/content/posts/` 有特別的工作限制，可以在那個資料夾新增較近的指引。全域規則仍然放在根目錄的 `AGENTS.md`，讓新進專案的 agent 一開始就知道基本工作方式。
 
-- `AGENTS.md` 說 commit 要有 body
-- `CLAUDE.md` 還停留在舊的單行 commit 習慣
-- `.cursor/rules` 裡的測試指令沒有更新
-- skills 的內容被複製到多個工具專屬資料夾
+### Claude Code：用 `CLAUDE.md` 匯入同一份指引
 
-這種 drift 很難靠記憶補救。人都會忘記更新文件，agent 當然也只能照它讀到的內容做事。當同一個 repo 對不同工具說出不同規則，最後受傷的是開發流程本身。
-
-我的整理方向很簡單：repo 只保留一份 project instructions。工具需要自己的入口時，就讓那個入口變成 adapter。
-
-## 官方文件其實指向同一個方向
-
-我整理 Claude Code、Codex、Cursor 的官方文件後，發現三個工具雖然格式不同，但可以收斂成同一個架構。
-
-### Codex：用 AGENTS.md 當 project instructions
-
-Codex 官方文件把 `AGENTS.md` 當成專案指令的主要入口。這份文件適合放 repo 的固定規則，例如：
-
-- 專案結構
-- 常用指令
-- coding convention
-- 測試方式
-- PR / commit 期待
-
-Codex 也支援 root `AGENTS.md` 搭配子目錄的 `AGENTS.override.md`。如果某個資料夾需要特殊規則，可以把 override 放到那個子目錄，讓越靠近工作目錄的規則有更高優先權。
-
-這個設計很適合放「穩定、全 repo 適用」的內容。它不適合塞進一大段任務細節，因為任務流程會越長越難維護。
-
-### Claude Code：用 CLAUDE.md 匯入 AGENTS.md
-
-Claude Code 官方預設讀 `CLAUDE.md`。如果 repo 已經有 `AGENTS.md`，官方文件建議在 `CLAUDE.md` 裡用 import：
+Claude Code 的預設入口是 `CLAUDE.md`。既然專案的共用規則已經放在 `AGENTS.md`，`CLAUDE.md` 只需要保留官方匯入語法：
 
 ```md
 @AGENTS.md
 ```
 
-這是很重要的小細節。`CLAUDE.md` 裡只寫 `AGENTS.md` 可能看起來也像在提醒模型讀檔，但它不是官方 import 語法。用 `@AGENTS.md` 才能把 Claude Code 的入口降到 adapter 的角色。
+這個檔案是 adapter，不承載另一份規則。指令、驗證方式與 Git 流程改動時，只修改 `AGENTS.md`，Claude Code 也會讀到同一個版本。
 
-最後 repo 裡真正需要維護的 project instructions 還是 `AGENTS.md`。
+### Antigravity：把共用規則放進可執行的任務脈絡
 
-### Cursor：簡單情境可以讀 root AGENTS.md
+Antigravity 適合處理跨編輯器、終端機、瀏覽器的完整任務。對這個專案，我會在任務一開始要求 agent 讀 `AGENTS.md`，再依 skills 索引開啟命中的 `.skills/<name>/SKILL.md`。
 
-Cursor 官方主要推薦 `.cursor/rules`，因為它可以做更細的規則控制，例如 always apply、依檔案路徑套用、agent requested rule 等。
-
-不過 Cursor 也支援 root `AGENTS.md` 作為簡單 project instructions。對只有一份全專案規則的 repo 來說，這已經足夠。等到專案真的需要針對 `src/content/posts/`、`src/components/`、`infra/` 套不同規則，再引入 `.cursor/rules` 也不遲。
-
-我自己的判斷是：先讓 `AGENTS.md` 承擔共用入口。當規則開始需要分區、分檔、分觸發條件，再讓 Cursor rules 介入。
-
-### Google Antigravity：原生支援 AGENTS.md
-
-Google 於 2025 年底推出的 Antigravity 是一款以 Agent 為核心的強大開發環境。它原生支援讀取專案根目錄的 `AGENTS.md`，並以此作為自主任務執行的決策依據。當我們想進一步導入複雜的 Task Workflow 時，它亦可完美讀取在 `AGENTS.md` 中索引的 `.skills/` 目錄，藉此載入對應的任務規則（例如文章潤飾或 Git 審查），使得「單一規則本體」的理想在 Antigravity 中運行得非常流暢。
-
-## 共用 AGENTS.md 的最小策略
-
-`AGENTS.md` 很適合回答一個問題：這個 repo 的基本工作方式是什麼？
-
-我會把它控制在短而穩定的範圍：
-
-```md
-# Agent Instructions
-
-## Repository Expectations
-
-- Follow the existing project structure and style before introducing new patterns.
-- Keep shared agent skills in `.skills/`.
-- Do not duplicate skill files under tool-specific directories.
-
-## Commands
-
-- Install dependencies: `npm install`
-- Start dev server: `npm run dev`
-- Build: `npm run build`
-- Type check: `npm run check`
-
-## Verification
-
-- Run `npm run build` after changing Astro, React, styling, or content rendering code.
-- Run `npm run check` after changing TypeScript or Astro components.
-- For documentation-only or skill-only changes, no build is required unless behavior changes.
-```
-
-這些規則的共同點是穩定。它們不會因為今天用 Claude Code、明天用 Codex 就改變。
-
-最後可以把工具專屬檔案降到 adapter：
+例如文章更新可以直接交代：
 
 ```text
-AGENTS.md       # 唯一 project instructions
-CLAUDE.md       # @AGENTS.md
-.cursor/rules   # 只有進階規則需求時才加入
+更新中英文文章。先讀 AGENTS.md 與命中的 skill，完成後跑 skills:check、npm run check、npm run build。
 ```
 
-這樣 repo 裡真正需要維護的 project instructions 只有 `AGENTS.md`。Claude Code 透過 `CLAUDE.md` 匯入它，Cursor 和 Codex 直接讀它。
+接著讓 agent 依序改內容、執行指令、啟動預覽；最後再從計畫、截圖或瀏覽紀錄檢查成果。這是任務執行層的安排，專案的流程本體仍然只有 `.skills/` 那一份。
 
-> 工具可以各自有 adapter，規則本體不要分裂。
+### Cursor：共用規則用 `AGENTS.md`，路徑觸發用 `.cursor/rules`
 
-下一篇我會用這個部落格 repo 當例子，說明我怎麼把 `AGENTS.md` 和 `.skills/` 拆開：`AGENTS.md` 放穩定入口，`.skills/` 放任務流程，讓 Claude Code、Codex、Cursor 都能共用同一套工作規則。
+Cursor 可以把根目錄的 `AGENTS.md` 當成簡單的專案指引。這足以承接整個專案都適用的規則。
 
-- **[一份 AGENTS.md，讓多個 AI Coding Agent 共享專案規則（下）](/posts/ai-coding-agent-shared-instructions-agents-skills-part-2)**
+當某條規則只適用於一類檔案時，再加入 `.cursor/rules/*.mdc`。例如文章被開啟或修改時，讓規則檔只指向完整流程：
+
+```mdc
+---
+description: Apply the blog writing workflow
+globs: src/content/posts/**/*.md
+alwaysApply: false
+---
+
+Read and follow `.skills/tech-blog-polish/SKILL.md` before editing this post.
+```
+
+這個 adapter 只回答「什麼時候載入」，不複製文章結構與語氣規則。Cursor 的檔案路徑能力保留下來，流程也不會分裂成多份。
+
+## 2. 專案的最小共用策略
+
+我會把規則拆成三個層次：`AGENTS.md` 放穩定指引，`.skills/` 放完整任務流程，工具資料夾放產生的或依路徑套用的 adapters。這個分法讓每個檔案都有單一責任，也讓審查時能快速判斷一條規則該放在哪裡。
+
+```text
+Luke-Tech-Blog/
+├── AGENTS.md                 # 專案指引
+├── CLAUDE.md                 # 匯入 AGENTS.md
+├── .skills/                  # 完整且唯一的流程
+├── .claude/skills/           # 產生的原生探索 adapter
+├── .agents/skills/           # 產生的原生探索 adapter
+└── .cursor/rules/            # 可選的檔案路徑觸發規則
+```
+
+`AGENTS.md` 的內容保持短而穩定：
+
+```md
+## Repository Expectations
+
+- Keep the complete workflow only in `.skills/<skill-name>/SKILL.md`.
+- `.claude/skills/` and `.agents/skills/` are generated native-discovery adapters.
+- Run `npm run skills:sync` after changing skill frontmatter.
+```
+
+`.skills/` 才放會反覆演進的細節，例如文章潤稿的讀者設定、段落結構與語氣，或 Git 審查的檢查順序與提交規則。
+
+需要 Claude Code 與 Codex 的原生探索時，執行同步腳本產生 adapter：
+
+```bash
+npm run skills:sync
+npm run skills:check
+```
+
+前者更新產生檔，後者只驗證同步狀態。這讓失步變成可以在提交前或 CI 明確攔下來的錯誤。
+
+> 一份共用規則能走得久，前提是每個工具只帶走它需要的入口。
+
+## 結論：先讓規則收斂，再讓工具各自發揮
+
+四個工具各有適合的使用方式：Codex 與 Claude Code 可直接接到共用指引；Antigravity 適合執行長任務並留下可檢查的成果；Cursor 適合按檔案路徑自動附加規則。
+
+先把 `AGENTS.md` 與 `.skills/` 定為唯一來源，後面的工具整合才不會變成持續複製文件的工作。
+
+下一篇會回到這個部落格專案，實際展示 Claude Code 與 Codex 的原生探索 adapters，以及 Antigravity、Cursor 在同一份流程上的使用方式。
+
+- **[一份 AGENTS.md，讓多個 AI 程式開發 Agent 共享專案規則（下）](/posts/ai-coding-agent-shared-instructions-agents-skills-part-2)**
 
 ## 參考資料
 
-- [OpenAI Codex: Custom instructions with AGENTS.md](https://developers.openai.com/codex/guides/agents-md)
-- [OpenAI Codex: Agent Skills](https://developers.openai.com/codex/skills)
-- [Claude Code: Memory](https://code.claude.com/docs/en/memory)
-- [Claude Code: Skills](https://code.claude.com/docs/en/agent-sdk/skills)
-- [Cursor: Rules](https://docs.cursor.com/context/rules-for-ai)
-- [Google Developers Blog: Build with Google Antigravity](https://developers.googleblog.com/en/build-with-google-antigravity-our-new-agentic-development-platform/)
-- [Google Antigravity Official Portal](https://antigravity.google/)
-- [AGENTS.md Guide: Cross-Tool Rules for Antigravity](https://antigravity.codes/)
-- [AGENTS.md Official Standard](https://agents.md/)
-- [OpenAI: Introducing Codex](https://openai.com/index/introducing-codex/)
-- [TechCrunch: Anysphere raises $8M from OpenAI to build an AI-powered IDE](https://techcrunch.com/2023/10/11/anysphere-raises-8m-from-openai-to-build-an-ai-powered-ide/)
-- [TechCrunch: Anthropic launches Claude Code research preview](https://techcrunch.com/2025/02/24/anthropic-launches-a-new-ai-model-that-thinks-as-long-as-you-want/)
+- [OpenAI Codex：Custom instructions with AGENTS.md](https://developers.openai.com/codex/guides/agents-md)
+- [Claude Code：How Claude remembers your project](https://code.claude.com/docs/en/memory)
+- [Cursor：Rules](https://docs.cursor.com/context/rules-for-ai)
+- [Google Antigravity：agentic development platform](https://developers.googleblog.com/en/build-with-google-antigravity-our-new-agentic-development-platform/)

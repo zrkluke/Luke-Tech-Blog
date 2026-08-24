@@ -38,6 +38,7 @@ const postEntrySchema = z.object({
   meta_title: z.string().optional(),
   description: z.string().optional(),
   date: z.coerce.date(),
+  updated: z.coerce.date().optional(),
   image: z.string().optional(),
   authors: z.array(z.string()).default(() => ["admin"]),
   categories: z.array(z.string()).default(() => ["others"]),

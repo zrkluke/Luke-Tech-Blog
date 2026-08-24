@@ -1,143 +1,136 @@
 ---
 title: "One AGENTS.md for Multiple AI Coding Agents (Part 1)"
-description: "Cursor, Claude Code, Codex, and Antigravity keep adding new ways to work with AI coding agents. Instead of maintaining separate rules for every tool, keep one canonical project instruction file in the repo."
+description: "How Codex, Claude Code, Antigravity, and Cursor can share one set of repo rules through AGENTS.md, .skills/, and thin adapters."
 date: 2026-05-20T01:00:00Z
+updated: 2026-08-24T00:00:00Z
 authors: ["Luke Kong"]
 categories: ["AI Agent"]
-tags: ["AI Coding Agent", "AGENTS.md", "Claude Code", "OpenAI Codex", "Cursor"]
+tags:
+  [
+    "AI Coding Agent",
+    "AGENTS.md",
+    "Claude Code",
+    "OpenAI Codex",
+    "Antigravity",
+    "Cursor",
+  ]
 audience: "engineer"
 image: "/images/post/ai-coding-agent-shared-instructions-cover.png"
 ---
 
-AI coding tools have been arriving one after another.
+AI coding tools will keep arriving. Once Cursor, Claude Code, Codex, and Antigravity each bring a rule file into a repo, the rules often start saying different things after a few months.
 
-Cursor (2023), Claude Code (February 2025), Codex CLI / Codex coding agent (April-May 2025), and even Google Antigravity (November 2025, which has now become one of my primary tools) all bring their own configuration files, rule formats, and workflows. At first, I also wondered whether every new tool meant learning a new setup, and whether every tool needed its own project instruction file.
+I now treat the repo as the stable entry point: shared rules live in `AGENTS.md`, complete task workflows live in `.skills/`, and tool-specific files only handle discovery or scoped loading. Tools can change while the material the team maintains stays in the repo.
 
-I eventually changed the way I looked at the problem.
+> Update (2026-08-24): This article now reflects this repo's native skill-discovery adapters. Continue to Part 2 for the implementation details and the Antigravity and Cursor workflows.
 
-The repo should be the stable entry point. The tools should adapt to the repo. If a project contains one clear, version-controlled set of working rules, then Cursor, Claude Code, Codex, or the next tool should be able to understand how the project is installed, built, tested, written, and committed.
+## 1. How Four Tools Connect to the Same Repo Rules
 
-> AI coding tools will change, but a repo's working rules should be maintained in one place.
+The entry point differs by tool, but the principle is the same: keep durable, cross-tool guidance in the repo and let tool-specific configuration handle only how it is loaded.
 
-Note: in this article, Codex refers to the Codex CLI / Codex coding agent that OpenAI introduced in 2025, not the 2021 OpenAI Codex code generation model.
+### Codex: `AGENTS.md` Is an Instruction Chain
 
-## More Tools, More Drift
+Codex reads `AGENTS.md` before it works. It walks from the project root to the current working directory and layers instructions along the way. A nearer `AGENTS.md` or `AGENTS.override.md` appears later in the chain, so it can refine the more general rules above it.
 
-The worst situation for an AI coding agent is not that it cannot write code. It is that it follows an outdated project rule.
+This is a good place for repo-wide information:
 
-This usually happens quietly. Maybe the project started with Cursor, so you created `.cursor/rules`. Later, you tried Claude Code and added `CLAUDE.md`. Then you tried Codex and added `AGENTS.md`. Each file made sense when it was created, but after a few months, they no longer say the same thing.
+- project structure and common commands
+- build, type-check, and test expectations
+- commit and review requirements
+- the canonical source for shared skills
 
-For example:
+If `src/content/posts/` needs a local constraint, that directory can carry nearer instructions. The root `AGENTS.md` still gives every agent the same starting point when it enters the repo.
 
-- `AGENTS.md` says every commit needs a body
-- `CLAUDE.md` still describes the old single-line commit style
-- `.cursor/rules` contains an outdated test command
-- skill instructions have been copied into several tool-specific folders
+### Claude Code: Import the Same Instructions From `CLAUDE.md`
 
-This kind of drift is hard to fix with memory. People forget to update documentation, and an agent can only follow the files it reads. When the same repo gives different tools different rules, the development workflow becomes the thing that breaks.
-
-My direction is simple: keep one project instruction source in the repo. When a tool needs its own entry file, make that file an adapter.
-
-## The Official Docs Point in the Same Direction
-
-After reading the official docs for Claude Code, Codex, and Cursor, I found that their file formats differ, but the architecture can still converge.
-
-### Codex: Use AGENTS.md for Project Instructions
-
-Codex treats `AGENTS.md` as the main project instruction entry point. It is a good place for stable repo rules such as:
-
-- project structure
-- common commands
-- coding conventions
-- verification steps
-- PR and commit expectations
-
-Codex also supports a root `AGENTS.md` plus nested `AGENTS.override.md` files. If a subdirectory needs special rules, that directory can contain an override file, and the rules closer to the working directory take higher priority.
-
-This is a good fit for stable, repo-wide expectations. It is not where I would put a long task workflow, because task-specific details grow quickly and make the entry file harder to maintain.
-
-### Claude Code: Import AGENTS.md From CLAUDE.md
-
-Claude Code reads `CLAUDE.md` by default. If the repo already has `AGENTS.md`, the official docs recommend importing it from `CLAUDE.md`:
+Claude Code uses `CLAUDE.md` as its default entry point. Since the shared repo rules already live in `AGENTS.md`, `CLAUDE.md` only needs the official import syntax:
 
 ```md
 @AGENTS.md
 ```
 
-This detail matters. Writing only `AGENTS.md` inside `CLAUDE.md` may look like a hint to the model, but it is not the official import syntax. Using `@AGENTS.md` turns `CLAUDE.md` into a thin adapter.
+This file only imports the instructions. Changes to commands, verification, or git workflow happen in `AGENTS.md`, and Claude Code receives the same version.
 
-The actual project instructions still live in `AGENTS.md`.
+### Antigravity: Put Shared Rules Into an Executable Task Context
 
-### Cursor: Root AGENTS.md Is Enough for Simple Cases
+Antigravity is useful for a full task that crosses the editor, terminal, and browser. In this repo, I start a task by asking the agent to read `AGENTS.md`, then use the skills index to open the matching `.skills/<name>/SKILL.md`.
 
-Cursor primarily recommends `.cursor/rules`, because rules can do more advanced things: always apply, attach by file path, or be requested by the agent.
-
-Cursor also supports root `AGENTS.md` as simple project instructions. For a repo that only needs one project-wide rule set, that is enough. If the project later needs different rules for `src/content/posts/`, `src/components/`, or `infra/`, then `.cursor/rules` can be added with a clear reason.
-
-My default choice is to let `AGENTS.md` carry the shared entry point first. Cursor rules can come in when I actually need path-scoped or trigger-specific behavior.
-
-### Google Antigravity: Native Support for AGENTS.md
-
-Google's Antigravity (released in late 2025, and now a core part of my development suite) natively supports `AGENTS.md` in the project root. It reads this file upon startup to understand the repository's build, test, and command constraints. When we want to introduce complex, repeatable developer workflows, we can direct it to read the `.skills/` directory from within `AGENTS.md` (e.g., for article polishing or git reviews), allowing a clean, unified rule structure to run seamlessly inside Antigravity's autonomous IDE environment.
-
-## A Minimal Shared AGENTS.md Strategy
-
-`AGENTS.md` should answer one question: how does this repo expect work to be done?
-
-I keep it short and stable:
-
-```md
-# Agent Instructions
-
-## Repository Expectations
-
-- Follow the existing project structure and style before introducing new patterns.
-- Keep shared agent skills in `.skills/`.
-- Do not duplicate skill files under tool-specific directories.
-
-## Commands
-
-- Install dependencies: `npm install`
-- Start dev server: `npm run dev`
-- Build: `npm run build`
-- Type check: `npm run check`
-
-## Verification
-
-- Run `npm run build` after changing Astro, React, styling, or content rendering code.
-- Run `npm run check` after changing TypeScript or Astro components.
-- For documentation-only or skill-only changes, no build is required unless behavior changes.
-```
-
-These rules are stable. They should not change just because I use Claude Code today and Codex tomorrow.
-
-Then the tool-specific files become adapters:
+For an article update, the task can be as bounded as this:
 
 ```text
-AGENTS.md       # the only project instruction source
-CLAUDE.md       # @AGENTS.md
-.cursor/rules   # add only when advanced Cursor rules are needed
+Update the Chinese and English posts. Read AGENTS.md and the matching skill first, then run skills:check, npm run check, and npm run build.
 ```
 
-Now the repo has only one project instruction file to maintain. Claude Code imports it through `CLAUDE.md`. Cursor and Codex can read it directly.
+The agent can then edit, run commands, and launch a preview. I review the resulting plan, screenshots, or browser recordings before deciding on another round. This is an execution-layer convention; the repo still has one copy of the workflow in `.skills/`.
 
-> Tools can have their own adapters, but the rule source should not split.
+### Cursor: Use `AGENTS.md` for Shared Rules and `.cursor/rules` for Path Triggers
 
-In the next post, I will use this blog repo as the concrete example: `AGENTS.md` as the stable entry point, `.skills/` for task workflows, and one shared setup that Claude Code, Codex, and Cursor can all follow.
+Cursor can use root `AGENTS.md` as straightforward project instructions. That covers rules that apply across the repo.
+
+Add `.cursor/rules/*.mdc` only when a rule should load for a specific path. For example, a rule can attach the writing workflow when a post is opened or edited:
+
+```mdc
+---
+description: Apply the blog writing workflow
+globs: src/content/posts/**/*.md
+alwaysApply: false
+---
+
+Read and follow `.skills/tech-blog-polish/SKILL.md` before editing this post.
+```
+
+This adapter answers when to load the workflow. It does not copy the article structure or tone rules. Cursor keeps its file-path behavior while the workflow remains in one place.
+
+## 2. A Minimal Shared Strategy for the Repo
+
+I separate rules into three layers: `AGENTS.md` holds stable instructions, `.skills/` holds complete task workflows, and tool folders hold generated or path-scoped adapters. Each file has one responsibility, and a review can quickly tell where a rule belongs.
+
+```text
+Luke-Tech-Blog/
+├── AGENTS.md                 # project instructions
+├── CLAUDE.md                 # imports AGENTS.md
+├── .skills/                  # complete, canonical workflows
+├── .claude/skills/           # generated native-discovery adapters
+├── .agents/skills/           # generated native-discovery adapters
+└── .cursor/rules/            # optional file-path triggers
+```
+
+Keep `AGENTS.md` short and stable:
+
+```md
+## Repository Expectations
+
+- Keep the complete workflow only in `.skills/<skill-name>/SKILL.md`.
+- `.claude/skills/` and `.agents/skills/` are generated native-discovery adapters.
+- Run `npm run skills:sync` after changing skill frontmatter.
+```
+
+Put the details that evolve repeatedly in `.skills/`: the reader profile, structure, and voice for article polishing, or the check sequence and commit rules for git review.
+
+When Claude Code and Codex need native discovery, generate and check the adapters:
+
+```bash
+npm run skills:sync
+npm run skills:check
+```
+
+The first command updates generated files; the second only verifies their state. Drift becomes a clear failure that can be caught before a commit or in CI.
+
+> A shared rule set lasts when every tool carries only the entry point it needs.
+
+## Conclusion: Converge the Rules, Then Use Each Tool Well
+
+The four tools have different strengths. Codex and Claude Code connect directly to shared instructions. Antigravity can execute a longer task and leave inspectable artifacts. Cursor can attach rules automatically by file path.
+
+Once `AGENTS.md` and `.skills/` are established as the single sources of truth, additional tool integrations stop becoming a document-copying project.
+
+The next post returns to this blog repo and shows the native discovery adapters for Claude Code and Codex, plus the Antigravity and Cursor workflows that use the same source.
 
 - **[One AGENTS.md for Multiple AI Coding Agents (Part 2)](/en/posts/ai-coding-agent-shared-instructions-agents-skills-part-2)**
 
 ## References
 
 - [OpenAI Codex: Custom instructions with AGENTS.md](https://developers.openai.com/codex/guides/agents-md)
-- [OpenAI Codex: Agent Skills](https://developers.openai.com/codex/skills)
-- [Claude Code: Memory](https://code.claude.com/docs/en/memory)
-- [Claude Code: Skills](https://code.claude.com/docs/en/agent-sdk/skills)
+- [Claude Code: How Claude remembers your project](https://code.claude.com/docs/en/memory)
 - [Cursor: Rules](https://docs.cursor.com/context/rules-for-ai)
-- [Google Developers Blog: Build with Google Antigravity](https://developers.googleblog.com/en/build-with-google-antigravity-our-new-agentic-development-platform/)
-- [Google Antigravity Official Portal](https://antigravity.google/)
-- [AGENTS.md Guide: Cross-Tool Rules for Antigravity](https://antigravity.codes/)
-- [AGENTS.md Official Standard](https://agents.md/)
-- [OpenAI: Introducing Codex](https://openai.com/index/introducing-codex/)
-- [TechCrunch: Anysphere raises $8M from OpenAI to build an AI-powered IDE](https://techcrunch.com/2023/10/11/anysphere-raises-8m-from-openai-to-build-an-ai-powered-ide/)
-- [TechCrunch: Anthropic launches Claude Code research preview](https://techcrunch.com/2025/02/24/anthropic-launches-a-new-ai-model-that-thinks-as-long-as-you-want/)
+- [Google Antigravity: agentic development platform](https://developers.googleblog.com/en/build-with-google-antigravity-our-new-agentic-development-platform/)

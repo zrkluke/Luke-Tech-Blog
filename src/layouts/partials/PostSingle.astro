@@ -15,7 +15,7 @@ type Props = {
 const allAuthors = await getSinglePage("authors");
 const { post, locale = "zh" } = Astro.props;
 const { Content } = await render(post);
-const { title, authors, categories, image, date } = post.data;
+const { title, authors, categories, image, date, updated } = post.data;
 const shareUrlPath =
   locale === "en" ? `en/posts/${post.id}` : `posts/${post.id}`;
 ---
@@ -24,11 +24,11 @@ const shareUrlPath =
   <div class="container">
     <div class="row px-3">
       <div class="mx-auto lg:col-8">
-        <div class="rounded-xl py-12 px-9 shadow md:p-[60px]">
+        <div class="rounded-xl px-9 py-12 shadow md:p-[60px]">
           <article>
             <h1 set:html={markdownify(title)} class="h2" />
             <ul
-              class="mt-4 mb-8 flex flex-wrap items-center space-x-3 text-text"
+              class="text-text mt-4 mb-8 flex flex-wrap items-center space-x-3"
             >
               <li>
                 {
@@ -36,12 +36,12 @@ const shareUrlPath =
                     .filter((author) =>
                       authors
                         .map((author) => slugify(author))
-                        .includes(slugify(author.data.title))
+                        .includes(slugify(author.data.title)),
                     )
                     .map((author) => (
                       <a
                         href={`/authors/${slugify(author.id)}`}
-                        class="flex items-center hover:text-primary hover:underline"
+                        class="hover:text-primary flex items-center hover:underline"
                       >
                         <span>{author.data.title}</span>
                       </a>
@@ -49,6 +49,14 @@ const shareUrlPath =
                 }
               </li>
               <li>{dateFormat(date)}</li>
+              {
+                updated && (
+                  <li>
+                    {locale === "zh" ? "更新於 " : "Updated "}
+                    {dateFormat(updated)}
+                  </li>
+                )
+              }
               <li>
                 <ul>
                   {
@@ -56,7 +64,7 @@ const shareUrlPath =
                       <li class="inline-block">
                         <a
                           href={`/categories/${slugify(category)}`}
-                          class="mr-3 hover:text-primary hover:underline"
+                          class="hover:text-primary mr-3 hover:underline"
                         >
                           {humanize(category)}
                         </a>
