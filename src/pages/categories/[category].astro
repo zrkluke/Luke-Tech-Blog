@@ -6,6 +6,7 @@ import Pagination from "@/layouts/components/Pagination.astro";
 import PostDiscovery from "@/layouts/components/PostDiscovery.astro";
 import { getSinglePage } from "@/lib/contentParser.astro";
 import { getTaxonomy } from "@/lib/taxonomyParser.astro";
+import { sortByDate } from "@/lib/utils/sortFunctions";
 import taxonomyFilter from "@/lib/utils/taxonomyFilter";
 import { humanize, markdownify } from "@/lib/utils/textConverter";
 import { Image } from "astro:assets";
@@ -30,7 +31,7 @@ const homepage = (await getEntry(
 )) as CollectionEntry<"homepage">;
 const { banner } = homepage.data;
 const posts = await getSinglePage("posts");
-const filterByTags = taxonomyFilter(posts, "categories", category);
+const filterByTags = taxonomyFilter(sortByDate(posts), "categories", category);
 const totalPages = Math.ceil(filterByTags.length / pagination);
 const categoryTitle = humanize(category || "");
 ---
@@ -77,7 +78,7 @@ const categoryTitle = humanize(category || "");
                 .map((post) => <Post post={post} />)
             }
             <Pagination
-              section={`/categories/${category}`}
+              section={`categories/${category}`}
               currentPage={1}
               totalPages={totalPages}
             />

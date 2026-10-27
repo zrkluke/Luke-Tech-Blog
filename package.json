@@ -9,6 +9,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "npm run typecheck",
+    "check:seo": "node scripts/check-seo.mjs",
     "typecheck": "node scripts/astro-check.mjs",
     "typecheck:watch": "node scripts/astro-check.mjs --watch",
     "lint": "prettier -c .",

@@ -30,7 +30,7 @@ export const getStaticPaths = async ({ paginate }: GetStaticPathsOptions) => {
       return paginate(filterByTags, {
         params: { category: category || "" },
         pageSize: pagination,
-      });
+      }).filter(({ params }) => params.page !== "1");
     })
     .flat();
 };

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/categories/:category/page/1",
+      "destination": "/categories/:category",
+      "permanent": true
+    }
+  ]
+}
