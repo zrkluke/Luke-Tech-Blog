@@ -14,7 +14,7 @@ const searchList = posts.map((item) => ({
   categories: item.data.categories,
   categorySlugs: item.data.categories.map((category) => slugify(category)),
   tags: item.data.tags,
-  content: item.body,
+  content: item.body ?? "",
 }));
 ---
 

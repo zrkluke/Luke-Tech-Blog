@@ -8,18 +8,14 @@ import {
 } from "react-icons/io5";
 
 const { base_url }: { base_url: string } = config.site;
-const {
-  title,
-  description,
-  urlPath,
-  className,
-}: {
+type Props = {
   title?: string;
   description?: string;
   /** Path after site origin, e.g. posts/slug or en/posts/slug (no leading slash) */
   urlPath: string;
   className?: string;
-} = Astro.props;
+};
+const { title, description, urlPath, className } = Astro.props;
 
 const origin = base_url.replace(/\/$/, "");
 const pageUrl = `${origin}/${urlPath.replace(/^\//, "")}`;
