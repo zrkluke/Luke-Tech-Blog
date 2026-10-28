@@ -66,17 +66,15 @@ Along with turning tasks into skills, we need to decide how agents hand work ove
 
 ## What Should We Do With the Time We Save?
 
-If employees and managers can both hand some of their work over to agents, I'd like the time saved to go toward the conversations we keep needing but rarely have enough time for.
+I'd like to hand over the work that can be automated to agents, so people have time to focus on **what agents still can't do for us, especially communication**.
 
-Across departments, we need to coordinate goals and resources. When talking to senior management, we need to explain practical constraints and get support. When talking to our teams, we need to explain why we're doing something and how the work is divided. These conversations involve different perspectives and a willingness to take responsibility.
+When working across departments, having the information ready doesn't mean the other team will agree to help. Each department has its own goals and priorities. You need to understand what matters to them, explain why the work is worth doing, and **persuade them to commit time and resources**. You still need to have those conversations yourself.
 
-AI can help organize information and prepare explanations. But I still think people need to spend time making trade-offs, reaching agreement, and taking responsibility for the results.
+The same goes for getting support from your manager and explaining the direction to your team. Agents can help prepare information and organize what you want to say. But addressing people's concerns and working out an approach everyone can accept still takes people's time.
 
-Looking back at the HR knowledge assistant and GenBI, I want to keep following what happens after someone gets the information. Helping someone wait less for a reply, notice a problem sooner, or make room for something they previously had no time for would help answer my original question: what have these assistants actually helped us do?
+Looking back at the HR knowledge assistant and GenBI, I'd like them to save people time searching documents and querying data, leaving them more room to use that information to discuss problems and move things forward. That's what I want to keep thinking about: once an assistant finishes its part, how do people take the work further?
 
-Here's what I hope for:
-
-> Hand over the work agents can handle, and use the time saved on things worth people's attention.
+> Hand over the work that can be automated to agents, and save people's time for the conversations, coordination, and persuasion they need to handle themselves.
 
 ## References
 
