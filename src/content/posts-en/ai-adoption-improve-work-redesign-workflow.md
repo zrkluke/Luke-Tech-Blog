@@ -72,9 +72,11 @@ When working across departments, having the information ready doesn't mean the o
 
 The same goes for getting support from your manager and explaining the direction to your team. Agents can help prepare information and organize what you want to say. But addressing people's concerns and working out an approach everyone can accept still takes people's time.
 
+Agents can help analyze options and lay out the pros and cons, but we still need to decide what to choose, what we're willing to give up, and which risks we're prepared to take. We also have to take responsibility for the outcome. Those trade-offs can't all be handed over to an agent.
+
 Looking back at the HR knowledge assistant and GenBI, I'd like them to save people time searching documents and querying data, leaving them more room to use that information to discuss problems and move things forward. That's what I want to keep thinking about: once an assistant finishes its part, how do people take the work further?
 
-> Hand over the work that can be automated to agents, and save people's time for the conversations, coordination, and persuasion they need to handle themselves.
+> Hand over the work that can be automated to agents, and use the time saved for communication, coordination, persuasion, making decisions, and taking responsibility for the outcomes.
 
 ## References
 
