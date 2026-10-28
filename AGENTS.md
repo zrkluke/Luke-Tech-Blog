@@ -40,6 +40,7 @@ Claude Code and Codex discover the generated adapters in `.claude/skills/` and
 Before handling a request, check whether it matches one of these skill descriptions:
 
 - `.skills/tech-blog-polish/SKILL.md`
+- `.skills/tech-blog-publish/SKILL.md`
 - `.skills/linkedin-blog-promo/SKILL.md`
 - `.skills/git-change-commit-review/SKILL.md`
 
