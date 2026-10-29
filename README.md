@@ -84,6 +84,16 @@ After finishing all the customization, you can create a production build by runn
 npm run build
 ```
 
+## Git 推送檢查
+
+每份新 checkout 執行一次 `npm run hooks:install`，啟用 `.githooks/` 的檢查。
+`pre-commit` 檢查暫存檔案的格式；`pre-push` 檢查每個推送版本中的文章，要求
+`src/content/posts/` 與 `src/content/posts-en/` 有相同的相對檔名（含副檔名）。
+缺少任何一種語言就會中止推送並列出檔名；工作目錄或暫存區尚未提交的翻譯不算。
+這項檢查也包含草稿，不會判斷翻譯是否與原文同步；發布前仍須依 `tech-blog-publish`
+完成內容、建置與 SEO 檢查。可執行 `node --test scripts/check-push-translations.test.mjs`
+驗證 hook 的檢查邏輯。
+
 <!-- edit with sitepins -->
 
 ## 📝 Edit Content with CMS

@@ -1,0 +1,5 @@
+#!/bin/sh
+set -eu
+
+echo "檢查推送版本的中英文文章..."
+node scripts/check-push-translations.mjs
