@@ -6,7 +6,7 @@ authors: ["Luke Kong"]
 categories: ["Database"]
 tags: ["PostgreSQL", "Amazon Redshift", "SUPER", "OLAP", "SQL"]
 audience: "engineer"
-image: "/images/post/postgresql-gin-index-optimization-cover.png"
+image: "/images/post/postgresql-redshift-afterword-cover.png"
 ---
 
 上一篇：[PostgreSQL 效能優化（下）：用 Array + GIN 把標籤變成索引](/posts/postgresql-gin-index-optimization-part-3)

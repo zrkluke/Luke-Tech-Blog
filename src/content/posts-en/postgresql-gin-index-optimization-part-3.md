@@ -2,6 +2,7 @@
 title: "PostgreSQL Optimization (Part 3): Turning tags into an index with Array + GIN"
 description: "Convert delimited tag strings into PostgreSQL's native text[] and back it with a GIN inverted index, so the query swaps Seq Scan for Index Scan. Includes the migration SQL and the GIN index command."
 date: 2026-05-04T00:00:00Z
+updated: 2026-10-29T00:00:00+08:00
 authors: ["Luke Kong"]
 categories: ["Database"]
 tags: ["PostgreSQL", "Database", "Performance", "GIN Index", "SQL"]
@@ -65,6 +66,8 @@ These database fundamentals will resurface on every future performance problem:
 > Regex helps reduce CPU cost first, but at large scale the bigger win comes from `Array + GIN`, because it changes the access path itself.
 
 ---
+
+Later, [we chose Redshift!](/en/posts/postgresql-gin-index-optimization-redshift-super-afterword) In this follow-up, I explain why we changed databases.
 
 Recap of the earlier parts:
 
