@@ -1,224 +1,92 @@
 ---
 name: tech-blog-polish
-description: Polish technical blog articles for this project using a strict four-part structure (Introduction, Development, Transition, Conclusion). Use when refining software and AI articles for either engineer readers or non-technical readers.
+description: 潤飾本專案的技術文章與後記，整理脈絡、精簡重複或空泛內容，保留作者的實戰經驗。使用者要求潤稿、調整大綱、釐清技術說明或檢查全文一致性時使用。
 disable-model-invocation: true
 ---
 
-# Luke Tech Blog Writing Polish
+# 技術文章潤稿
 
-## Goal
+## 目標與範圍
 
-Turn draft content into a clear, persuasive article with strict `起承轉合` structure.
-Keep the original core idea, but improve readability, logic flow, and audience fit.
+讓讀者知道作者遇到什麼問題、為什麼做出選擇，以及實際改變了什麼。以使用者最後確認的內容、標題、章節與口吻為準。
 
-## Required four-part flow (no literal 起承轉合 labels)
+- 先讀文章與相關系列篇章，再決定修改範圍。窄範圍修字直接處理，不順便重寫其他段落。
+- 讀取 frontmatter 的 `audience`：`engineer` 保留必要的實作與取捨；`non-technical` 用情境與例子解釋。缺少設定時先依文章與對話判斷，只有讀者定位會影響改寫且無法判斷時才詢問。
+- 使用繁體中文的日常口吻。保留作者直接分享工作經驗的語氣，不補上作者沒說過的情緒、對話、反省或成效。
+- 使用者要求精簡時，優先刪除重複與支線，不以新句子替換每一句刪文。
 
-- Keep the four-part logic, but do not output headings literally as `起` `承` `轉` `合`.
-- Use reader-friendly subheadings that match the article topic.
-- Example heading sets:
-  - `問題背景` -> `關鍵分析` -> `觀點轉折` -> `重點總結`
-  - `The setup` -> `What we found` -> `A different angle` -> `Takeaways`
+## 先確認主軸與事實
 
-### 起 (Introduction)
-- Function: state topic, provide context, trigger curiosity.
-- Content: quickly introduce core claim and context (time/place/person/problem).
-- Techniques:
-  - Direct opening: state topic immediately.
-  - Quotation opening: use a relevant quote for authority.
-  - Suspense opening: ask a counterintuitive question.
+改寫前先釐清文章要回答的主要問題，以及使用者提供的情境、數據與決策。缺少的資訊保持未確認，不用合理猜測補成作者經驗。
 
-### 承 (Development)
-- Function: carry the opening claim and explain in depth.
-- Content: provide evidence, examples, and concrete scenarios.
-- Techniques:
-  - Concrete detail: convert abstract ideas into story or scene.
-  - Data support: cite objective numbers or expert viewpoints.
-  - Layered explanation: break down points as first, second, third.
+- 分清楚「提出方案」「實際採用」「實測結果」與「說明用例子」。若前文僅提出方案，寫「上一篇提出……」，不要改成「我們已使用……」。
+- 保留使用者確認的因果關係。資訊後來補齊，不等於作者當初考慮不周；不要擅自把選型調整寫成個人疏失，也不要擅自歸責他人。
+- 技術能力、實際效能與費用各自查證。資料量大不能直接推出容量不足、索引失效或維護必然困難；選型方向也不等於已驗證更快、更省錢。
+- 例子可延續前文的資料與查詢情境，但要標明「例如」，不要把教學例子寫成真實需求或實測紀錄。
 
-### 轉 (Transition)
-- Function: shift perspective, add reflection, avoid a flat argument.
-- Content: expose blind spots, add counter-views, or switch reasoning angle.
-- Techniques:
-  - Counterfactual: what if the opposite happened?
-  - Perspective switch: re-check from other roles or long-term view.
-  - Reflection and lift: move from event-level to principle-level insight.
+## 結構：先讓讀者跟上決策
 
-### 合 (Conclusion)
-- Function: close the loop, summarize, and elevate.
-- Content: restate main thesis and final takeaway.
-- Constraint: do not introduce new major arguments here.
-- Techniques:
-  - Echo opening: connect back to the opening idea.
-  - Concise summary: recap key points.
-  - Insight/call: provide reflection, encouragement, or invitation to action.
+以起承轉合檢查敘事功能，可依文章合併，不強制四個章節，也不把「起承轉合」當標題：
 
-## Audience-specific writing mode
+- **破題**：標題或開頭直接交代事件、決定或問題，避免先回顧整個系列才進入主題。
+- **說明依據**：從讀者已知的情境，帶到新需求與比較依據。
+- **補充變化**：需要時說明方案如何調整、實作改變了什麼；支線篇幅要配合它對主題的重要性。
+- **收束**：回答該段提出的問題，或交代作者這次具體經驗。不要硬補人生道理、下一次的承諾或行動呼籲。
 
-### Audience decision source of truth
+選型與經驗後記特別注意：
 
-- Read article frontmatter first.
-- If `audience` exists, use it as the writing mode source of truth.
-- Allowed values: `engineer`, `non-technical`.
-- If `audience` is missing, ask the user before polishing.
+- 比較表以本案需求當列項，呈現各方案在這些條件下的取捨；避免整理成產品功能介紹。
+- 比較表後接實際條件與最後選擇的理由，不能只列優缺點而不做判斷。資料量等背景放在能銜接論證的位置，不在前後反覆解釋。
+- 每節處理一個問題。別把新方案的優勢藏在舊方案的缺點之下，也別讓補充技術搶走選型主軸。
+- 標題要對應內容；「實戰心得」適合回顧選型經過，不必統一叫「結論」。
+- 引言或 blockquote 只在確有需要時使用，不為了收尾而製造金句。
 
-### Mode A: Engineers
-- Tone: precise, practical, and problem-solving.
-- Use more technical vocabulary, but keep sentence structure clean.
-- Emphasize:
-  - Problem definition and constraints
-  - Design decisions and trade-offs
-  - Complexity analysis (time/space) and scaling behavior
-  - System design thinking (CAP, reliability, consistency, and operability)
-  - Implementation details and pitfalls
-  - Why this approach works in real projects
-- Preferred evidence:
-  - Code snippets, architecture choices, complexity/performance notes
-  - Real incident, debugging process, benchmark, or measurable result
-- Complexity analysis rules:
-  - Always state time complexity using Big-O for key operations.
-  - State space complexity when memory usage is relevant.
-  - Compare at least one alternative approach and explain trade-offs.
-  - Explain practical cost, not only asymptotic notation (constants, IO, network, cache effects).
-  - If complexity cannot be exact, provide reasoned upper bound and assumptions.
-- System design analysis rules:
-  - For distributed or service-level topics, discuss CAP trade-offs explicitly (choose two under partition and justify).
-  - Clarify consistency model assumptions (strong/eventual/read-your-writes) and user impact.
-  - Analyze availability and failure modes (timeouts, retries, idempotency, backpressure, circuit breaking).
-  - Include scalability path (vertical vs horizontal, sharding/partitioning, caching strategy).
-  - Explain observability and operations plan (SLO/SLI, key metrics, logs, tracing, alert signals).
+## 技術說明：先說改進，再給寫法
 
-### Mode B: Non-technical readers
-- Tone: plain language, guided, low jargon.
-- Explain terms immediately using analogy or everyday examples.
-- Emphasize:
-  - What the technology is
-  - Why it matters in daily life or work
-  - Practical use cases and expected value
-  - Limits, risks, and realistic expectations
-- Preferred evidence:
-  - Scenarios, comparisons, simple numbers, and tangible outcomes
+- 新情境先接回前文。例如先說原本只需要篩選標籤，再用一個具體統計問題，解釋為何要處理更大範圍的資料。
+- 介紹調整時，依序回答「原本怎麼存或怎麼查」「改了什麼」「改善了什麼」「仍有什麼限制」，再提供必要的範例。
+- 專有名詞會增加讀者的理解負擔。對主題必要的名詞，先用白話解釋用途；不影響理解的名稱直接省略。
+- 支線說明優先用一個完整、最小的範例。只有增加案例能解釋重要差異時才擴充；使用者要求單一範例時，不再拆成多組示範。
+- 不因讀者是工程師就固定補 Big-O、CAP、一致性或維運清單。這些細節要能解釋本案的決策或限制，且符合使用者要求的深度。
+- 留下會改變讀者理解的具體限制，例如「每筆標籤越多，展開與比對的工作越多」。避免孤立地補「實際速度仍要量測」「還要全面評估」等提醒。
+- 刪除泛泛提醒時仍須保留事實邊界，不把預期效益改成已證實的結果。
 
-## Voice and style standards (human-sounding)
+## 精簡與口吻
 
-- Write like a real engineer sharing field experience, not a formal AI narrator.
-- Prefer concrete verbs and direct statements over abstract slogans.
-- Keep confidence grounded: explain why with one clear reason or example.
-- Allow short natural sentences; do not force every sentence into textbook structure.
-- Use topic-specific wording, avoid reusable generic phrases.
-- Tone baseline: sincere sharing, sharp diagnosis, direct but respectful.
-- Be candid about problems, but avoid blameful or mocking language.
-- State the issue in one sentence first, then explain context.
+每句話至少增加一項具體資訊：情境、事實、因果、差異、例子或限制。若刪掉後不影響理解與判斷，就刪掉。
 
-### Phrases to avoid (AI-like)
+- 同一項優點或限制說清楚一次即可；章節收束只交代決策，不重講比較表。
+- 避免「關鍵在於」「本質上」「值得注意的是」「總而言之」這類模板轉折，直接寫事情。
+- 避免用「不是 A，而是 B」「與其 A，不如 B」製造不必要的對立。必要的技術比較與誤解澄清，保留具體差異。
+- 不把第一人稱當成經驗感的替代品。具體工作、選擇與改變，比「這讓我意識到」「下次我會更全面」有用。
+- 不擅自補「我當初沒想清楚」「這次提醒了我……」。心得沿用作者提供的資訊與判斷。
 
-- `關鍵在於...`
-- `本質上...`
-- `值得注意的是...`
-- `總而言之...`
-- The whole "contrast frame" family — see anti-pattern below.
+常見修正：
 
-### Anti-pattern: contrast frames (不是A而是B / 與其A，B / "not X, it's Y")
+| 反模式                         | 處理方式                                                       |
+| ------------------------------ | -------------------------------------------------------------- |
+| 「實際速度仍要量測」           | 若只是通用提醒就刪除；有相關限制時，說清楚什麼因素增加工作量。 |
+| 「資料庫選型還有很多面向」     | 改寫成本案實際影響決策的需求、成本與選擇。                     |
+| 突然寫「跨月份、跨主題分析」   | 先給讀者理解得了的查詢例子，再決定是否需要這個術語。           |
+| 僅為提案，卻寫「上一篇用了 X」 | 改為「上一篇提出的方案是 X」。                                 |
+| 結尾再宣告一套泛用原則         | 保留這次做了什麼選擇、基於哪些已知資訊；沒有新內容就不補收尾。 |
 
-The whole contrast-frame family reads as AI cadence and must be avoided, even when the contrast feels natural.
+## 來源：查核與作者閱讀經驗分開
 
-ZH variants to avoid (all equivalent in feel):
-- `不是A，而是B`
-- `與其A，B`
-- `比起A，更B`
-- `重點不在A，而在B`
-- `A 不重要，B 才重要`
+- 依實際引用與使用者指定保留來源。新增、易變或有疑義的技術事實使用官方文件等可靠來源查核；已確認且未變更的內容不重複查找。
+- 不因提到一項技術就自動附官網，也不把搜尋過的所有頁面都放進文章。
+- 作者明確引用、讀過或指定的來源可列為「參考資料」。不暗示編輯查核的文件是作者當時的閱讀來源。
+- 給讀者補充規格或操作文件時，可使用「延伸閱讀」，挑直接相關且不重複的連結。需要支撐特定主張的來源，也可就近連結。
+- 連結應對應實際功能或主張。新增或變更連結時確認可用；不要為了精簡而移除理解主張所必需的來源。
 
-EN variants to avoid (all equivalent in feel):
-- `it's not X, it's Y`
-- `isn't X — it's Y`
-- `rather than X, Y`
-- `not X but Y`
-- `forget X. Y` (still implicitly negates A)
+## 系列銜接與全文檢查
 
-Why it's bad:
-- It manufactures a strawman (A) just to elevate B.
-- Two sentences in a row using this frame is an instant tell of AI writing.
-- The reader rarely needed the negation to understand B.
-- Demoting A to a subordinate clause (`與其...`, `rather than...`) is the same pattern, just dressed differently — it still smuggles A in.
+- 系列文章保留相鄰篇章的可點擊連結：後篇在開頭附近連回前篇，前篇在結尾附近連到後篇。依文章語言撰寫連結文字，核對實際路由。
+- 更新標題時檢查系列引文；移動資料、決策或限制時，檢查前後銜接，不留下失去依據的句子。
+- 窄範圍修改後回讀前後段落；調整大綱、比較表或主因後重讀整節。使用者要求順全文時，檢查標題、摘要、比較、範例與心得的因果是否一致。
+- 最後檢查：是否新增未確認的事實？是否把方案寫成實作？是否加入歸責？是否重複介紹同一優點？是否只是換句話說，沒有真正刪文？
+- 保留使用者最後確認的段落與格式，除非本次要求或前後一致性需要修改。
 
-Required rewrite: drop A entirely, state B directly.
+## 交付
 
-Examples:
-- Before: `這次沉澱下來的不是步驟，而是幾個基本功。`
-- After: `這次沉澱下來的是幾個基本功。`
-- Before: `與其記住步驟，這幾個基本功更值得帶走。`
-- After: `下面這幾個基本功，之後都會再用到。`
-- Before: `It's not a copy-paste workflow, it's a set of fundamentals.`
-- After: `These fundamentals will resurface on every future problem.`
-- Before: `Rather than memorizing steps, keep these fundamentals.`
-- After: `Keep these fundamentals — they show up on every future problem.`
-
-When you find yourself wanting to write A first to make B sound stronger, that's the cue to delete A and trust B to stand alone.
-
-### General rewrite preference
-
-- Replace abstract lines with concrete action/result wording.
-- Example:
-  - Less human-like: `關鍵在於是否改變存取路徑。`
-  - Preferred: `真正拉開差距的是有沒有讓查詢改走索引那條路。`
-
-## Highlight rule: use blockquote for key takeaway
-
-- Use blockquote to highlight one final takeaway sentence when the section closes.
-- Keep the heading outside the blockquote for clean visual hierarchy.
-- Preferred pattern:
-  - `### 結論`
-  - `> [single key takeaway sentence]`
-- Keep blockquote short: one sentence (max two).
-- Do not place lists, code blocks, or long paragraphs inside the quote.
-
-## Series article links
-
-- When creating, splitting, translating, or polishing a multi-part article series, add explicit links between adjacent parts.
-- The first part must include a clear link to the next part near the ending, before references if references exist.
-- Later parts must include a clear Markdown link back to the previous part near the introduction, before the main body starts.
-- Mentioning "previous post" or "上一篇" in prose is not enough; include an actual clickable link.
-- Use the article language for link text:
-  - Traditional Chinese articles: `下一篇`, `上一篇`, or the full translated title.
-  - English articles: `Next post`, `Previous post`, or the full English title.
-- After adding or changing series links, verify the target route matches the repo's post URL convention.
-
-### Final tone check before output
-
-1. Remove at least 1 generic abstract sentence if found.
-2. Ensure at least 1 sentence sounds like firsthand experience or practical judgment.
-3. Read one paragraph aloud mentally; if it sounds like a report template, rewrite it.
-4. Ensure wording is direct and clear, but not hurtful.
-
-## References and Search Citations
-
-- **Search Action Citation Requirement**: If you perform any search actions (e.g., web search, browsing) or gather information from external resources during the writing/polishing process, you MUST compile and list the relevant official documentation, standard specifications, or highly authoritative references at the bottom of the article under a `## 參考資料` (or `## References` for English articles) section.
-- **Mentioned Technologies Citation Requirement**: If any specific external tool, technology, library, framework, or product (such as Astro, Cursor, Antigravity, etc.) is mentioned in the article, its official homepage or standard usage guide MUST be listed in the references.
-- **Reference Entry Standards**:
-  - URLs must be highly precise (linking to the exact feature page or guide, not just a generic landing page).
-  - Test and verify the URLs to ensure they are valid and active.
-  - Multi-language alignment: Traditional Chinese articles should prioritize Traditional Chinese or English official resources, and English articles must use corresponding English resources.
-
-## Execution checklist
-
-When polishing an article, follow this order:
-
-1. Identify target audience (`engineer` or `non-technical`).
-   - First read frontmatter `audience` and follow it.
-   - If not present, ask user to decide before continuing.
-2. Rebuild the article into a four-part flow with custom semantic headings.
-3. Ensure each section has a distinct role and no repetition.
-4. Adjust wording to the selected audience mode.
-5. Apply voice and style standards to remove AI-like phrasing.
-6. Remove empty claims; add evidence, example, or reasoning.
-7. Tighten sentences: one paragraph, one purpose.
-8. If the article is part of a series, add/check previous and next article links.
-9. Verify search actions and mentioned technologies, and list high-quality, verified reference links in the references section.
-10. Finish with a conclusion that echoes the opening.
-
-## Output contract
-
-- Keep the original author intent and opinion.
-- Improve structure first, then wording.
-- Use Traditional Chinese by default unless user asks otherwise.
-- If source content is too short, propose a draft expansion for each section.
+簡短說明具體改動並提供文章連結。純潤稿不自動翻譯、建立 commit 或部署；發布準備另依對應流程處理。
