@@ -1,7 +1,7 @@
 ---
 title: "We Chose Redshift!"
 description: "Around 20 TB a year, with at least two years of history to analyze. This follow-up explains why we chose Redshift: analytical performance, daily index maintenance, and cloud costs."
-date: 2026-10-28T00:00:00+08:00
+date: 2026-10-29T00:00:00+08:00
 authors: ["Luke Kong"]
 categories: ["Database"]
 tags: ["PostgreSQL", "Amazon Redshift", "SUPER", "OLAP", "SQL"]

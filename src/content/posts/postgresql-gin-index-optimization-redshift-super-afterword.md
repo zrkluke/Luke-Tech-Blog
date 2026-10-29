@@ -1,7 +1,7 @@
 ---
 title: "我們選用 Redshift 了！"
 description: "每年約 20 TB、至少分析兩年的歷史資料。這篇後記說明團隊選用 Redshift 的具體原因：分析效率、每日索引維護與雲端費用。"
-date: 2026-10-28T00:00:00+08:00
+date: 2026-10-29T00:00:00+08:00
 authors: ["Luke Kong"]
 categories: ["Database"]
 tags: ["PostgreSQL", "Amazon Redshift", "SUPER", "OLAP", "SQL"]
