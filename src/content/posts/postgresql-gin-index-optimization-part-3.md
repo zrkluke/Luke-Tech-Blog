@@ -2,6 +2,7 @@
 title: "PostgreSQL 效能優化（下）：用 Array + GIN 把標籤變成索引"
 description: "把『分號串起來的標籤字串』改成 PostgreSQL 原生 text[]，搭配 GIN 倒排索引，讓查詢從 Seq Scan 換成 Index Scan，附上資料模型遷移與 GIN 建立的實戰指令。"
 date: 2026-05-04T00:00:00Z
+updated: 2026-10-29T00:00:00+08:00
 authors: ["Luke Kong"]
 categories: ["Database"]
 tags: ["PostgreSQL", "Database", "效能調校", "GIN Index", "SQL"]
@@ -65,6 +66,8 @@ CREATE INDEX CONCURRENTLY idx_customers_tags_gin
 > Regex 的確能先把 CPU 壓力降下來，但資料量一大，真正拉開差距的還是 `Array + GIN` 這種直接改變查詢路徑的做法。
 
 ---
+
+後來，[我們選用 Redshift 了！](/posts/postgresql-gin-index-optimization-redshift-super-afterword) 這篇後記聊聊，為什麼我們最後換了資料庫。
 
 回頭快速複習前兩集：
 
